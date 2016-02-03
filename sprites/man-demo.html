@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="My 'sprites' asssignment 0204.">
+    <meta name="description" content="Man demo">
     <meta name="keywords" content="sprites, graphics, cmsi371, dondi, josh, kuroda, awesome, fantastic, inspiring, lemon, lime, soda">
     <meta name="author" content="projectomato">
 
-    <title>sierra mist</title>
+    <title>sierra mist man</title>
   </head>
 
   <body>
@@ -17,8 +17,6 @@
     </canvas>
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
-    <script type="text/javascript" src="/sprites/sun.js"></script>
-    <script type="text/javascript" src="/sprites/bird.js"></script>
     <script type="text/javascript" src="/sprites/man.js"></script>
     
     <script>
@@ -26,34 +24,19 @@
           var canvas = document.getElementById('mi-canvas');
           var renderingContext = canvas.getContext("2d");
           
-          var leftArmAngle = Math.PI /8;
+          var leftArmAngle = Math.PI / 8;
           var rightArmAngle = -Math.PI /2;
-          var leftLegAngle = Math.PI /8;
+          var leftLegAngle = Math.PI / 8;
           var rightLegAngle = -Math.PI /2;
-          
-          var rayAngle = Math.PI /4;
-          
-          var leftWingAngle = Math.PI /8;
-          var rightWingAngle = -Math.PI /2;
           
           var drawScene = function () {
               
             renderingContext.fillStyle = "white";
             renderingContext.fillRect(0, 0, 1250, 800);
-            renderingContext.fillStyle = "green";
-            renderingContext.fillRect(0, 600, 1250, 200);
-            
-            renderingContext.save();
-            renderingContext.translate(1000, 200);
-            SpriteLibrary.sun({
-                renderingContext: renderingContext,
-                rayAngle: rayAngle
-            });
-            renderingContext.restore();
             
             renderingContext.save();
             renderingContext.scale(0.5, 0.5);
-            renderingContext.translate(450, 700);
+            renderingContext.translate(900, 300);
             SpriteLibrary.theMan({
                 renderingContext: renderingContext,
                 leftArmAngle: leftArmAngle,
@@ -63,25 +46,10 @@
             });
             renderingContext.restore();
             
-            renderingContext.save();
-            renderingContext.translate(600, 250);
-            SpriteLibrary.bird({
-                renderingContext: renderingContext,
-                leftWingAngle: leftWingAngle,
-                rightWingAngle: rightWingAngle
-            });
-
-            renderingContext.restore();
-            
             leftArmAngle += Math.PI / 180;
             rightArmAngle -= Math.PI / 90;
             leftLegAngle += Math.PI / 90;
             rightLegAngle -= Math.PI / 90;
-            
-            rayAngle += Math.PI / 180;
-            
-            leftWingAngle += Math.PI / 180;
-            rightWingAngle -= Math.PI / 90;
             
             window.requestAnimationFrame(drawScene);
           };

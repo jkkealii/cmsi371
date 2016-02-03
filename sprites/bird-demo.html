@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Bird demo">
+    <meta name="keywords" content="sprites, graphics, cmsi371, dondi, josh, kuroda, awesome, fantastic, inspiring, lemon, lime, soda">
+    <meta name="author" content="projectomato">
+
+    <title>bird sierra mist</title>
+  </head>
+
+  <body>
+    <canvas id="mi-canvas" width="1250" height="800">
+      
+    </canvas>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript" src="/sprites/bird.js"></script>
+    
+    <script>
+        (function() {
+          var canvas = document.getElementById('mi-canvas');
+          var renderingContext = canvas.getContext("2d");
+          
+          var leftWingAngle = Math.PI /8;
+          var rightWingAngle = -Math.PI /2;
+          
+          var drawScene = function () {
+              
+            renderingContext.fillStyle = "white";
+            renderingContext.fillRect(0, 0, 1250, 800);            
+            renderingContext.save();
+            renderingContext.translate(200, 250);
+            
+            SpriteLibrary.bird({
+                renderingContext: renderingContext,
+                leftWingAngle: leftWingAngle,
+                rightWingAngle: rightWingAngle
+            });
+            renderingContext.restore();
+            
+            leftWingAngle += Math.PI / 180;
+            rightWingAngle -= Math.PI / 90;
+            
+            window.requestAnimationFrame(drawScene);
+          };
+          
+          window.requestAnimationFrame(drawScene);
+        }());
+    </script>
+  </body>
+</html>
