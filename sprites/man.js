@@ -28,7 +28,7 @@
         renderingContext.fill();
         
         renderingContext.restore();
-    }
+    };
     
     var drawLeg = function (renderingContext, legOffset, legAngle) {
         renderingContext.save();
@@ -44,7 +44,7 @@
         renderingContext.fill();
         
         renderingContext.restore();
-    }
+    };
     
     SpriteLibrary.theMan = function(manSpecs) {
         var renderingContext = manSpecs.renderingContext;

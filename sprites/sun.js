@@ -15,7 +15,7 @@
         renderingContext.fillRect(-RAY_WIDTH/2, 0, RAY_WIDTH, RAY_HEIGHT);
         
         renderingContext.restore();
-    }
+    };
     
     SpriteLibrary.sun = function(sunSpecs) {
         var renderingContext = sunSpecs.renderingContext;
