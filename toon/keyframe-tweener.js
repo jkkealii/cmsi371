@@ -95,6 +95,20 @@
                         var currentTweenFrame = currentFrame - startKeyframe.frame;
                         var duration = endKeyframe.frame - startKeyframe.frame + 1;
 
+                        var tweenables = {
+                              renderingContext: renderingContext
+                        };
+
+                        var addTweenable = function(tweenables, startElement, endElement) {
+                              if (endElement == null) {
+                                    tweenables[startElement.label] = startElement.val;
+                              } else {
+                                    var valStart = startElement.val;
+                                    var valDist = endElement.val - valStart;
+                                    tweenables[startElement.label] = ease(currentTweenFrame, valStart, valDist);
+                              }
+                        };
+
                         // Build our transform according to where we should be.
                         renderingContext.translate(
                             ease(currentTweenFrame, txStart, txDistance, duration),
