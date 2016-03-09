@@ -105,9 +105,20 @@
                               } else {
                                     var valStart = startElement.val;
                                     var valDist = endElement.val - valStart;
-                                    tweenables[startElement.label] = ease(currentTweenFrame, valStart, valDist);
+                                    tweenables[startElement.label] = ease(currentTweenFrame, valStart, valDist, duration);
                               }
                         };
+
+                        if (startKeyframe.tweenlets) {
+                              startKeyframe.tweenlets.forEach(function (startElement, index) {
+                                    if (endKeyframe.tweenlets) {
+                                          var endElement = endKeyframe.tweenlets[index];
+                                          addTweenable(tweenables, startElement, endElement);
+                                    } else {
+                                          addTweenable(tweenables, startElement);
+                                    }
+                              })
+                        }
 
                         // Build our transform according to where we should be.
                         renderingContext.translate(
@@ -123,7 +134,7 @@
                         );
 
                         // Draw the sprite.
-                        sprites[i].draw(renderingContext);
+                        sprites[i].draw(tweenables);
 
                         // Clean up.
                         renderingContext.restore();
@@ -162,6 +173,24 @@
             return (percentComplete < 1) ?
                     (distance / 2) * percentComplete * percentComplete + start :
                     (-distance / 2) * ((percentComplete - 1) * (percentComplete - 3) - 1) + start;
+        },
+
+        startStopGo: function(currentTime, start, distance, duration) {
+            var ts = (currentTime /= duration) * currentTime;
+            var tc = ts * currentTime;
+            return start + distance * ((-5.75 * tc * ts) + (9.05 * ts * ts) + (1.5 * tc) + (-8.4 * ts) + (4.6 * currentTime));
+        },
+
+        slowToStart: function(currentTime, start, distance, duration) {
+            var ts = (currentTime /= duration) * currentTime;
+            var tc = ts * currentTime;
+            return start + distance * ((-1.35 * tc * ts) + (0.9 * ts * ts) + (2.5 * tc) + (-1.4 * ts) + (0.35 * currentTime));
+        },
+
+        backAndForth: function(currentTime, start, distance, duration) {
+            var ts = (currentTime /= duration) * currentTime;
+            var tc = ts * currentTime;
+            return start + distance * ((-9.45 * tc * ts) + (16.7 * ts * ts) + (10.9 * tc) + (-27.6 * ts) + (10.45 * currentTime));
         },
 
         initialize: initializeAnimation
