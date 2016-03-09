@@ -18,7 +18,7 @@
 
     var drawScene = function () {
       
-        renderingContext.fillStyle = "white";
+        renderingContext.fillStyle = "cyan";
         renderingContext.fillRect(0, 0, 1250, 800);
         renderingContext.fillStyle = "green";
         renderingContext.fillRect(0, 600, 1250, 200);
@@ -54,7 +54,7 @@
         renderingContext.restore();
 
         // uncomment the below code for some fun times
-        
+
         // leftArmAngle += Math.PI / 180;
         // rightArmAngle -= Math.PI / 90;
         // leftLegAngle += Math.PI / 90;
@@ -77,17 +77,10 @@
         renderingContext.putImageData(
             Nanoshop.applyFilter(
                 renderingContext.getImageData(0, 0, canvas.width, canvas.height),
-                Nanoshop.darkener
-            ),
-            0, 0
-        );
-
-        renderingContext.putImageData(
-            NanoshopNeighborhood.applyFilter(
-                renderingContext,
-                renderingContext.getImageData(0, 0, canvas.width, canvas.height),
-                NanoshopNeighborhood.darkener
-                //NanoshopNeighborhood.averager // Convenience comment for easy switching.
+                // Nanoshop.darkener
+                // below are the two filters I created
+                Nanoshop.lightener
+                // Nanoshop.lessGreenener
             ),
             0, 0
         );
@@ -99,8 +92,11 @@
             NanoshopNeighborhood.applyFilter(
                 renderingContext,
                 renderingContext.getImageData(0, 0, canvas.width, canvas.height),
-                NanoshopNeighborhood.darkener
-                //NanoshopNeighborhood.averager // Convenience comment for easy switching.
+                // NanoshopNeighborhood.darkener
+                // NanoshopNeighborhood.averager // Convenience comment for easy switching.
+                // below are the two filters I created
+                NanoshopNeighborhood.lightener
+                // NanoshopNeighborhood.moreGreenener
             ),
             0, 0
         );

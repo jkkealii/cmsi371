@@ -11,11 +11,11 @@ var Nanoshop = {
     },
 
     lightener: function (x, y, r, g, b, a) {
-        return [ r / 2, g / 2, b / 2, a ];
+        return [ r * 2, g * 2, b * 2, a ];
     },
 
     lessGreenener: function (x, y, r, g, b, a) {
-        return [ r / 2, g / 2, b / 2, a ];
+        return [ r, g / 2, b, a ];
     },
 
     /*
