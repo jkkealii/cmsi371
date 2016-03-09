@@ -22,19 +22,51 @@
         var renderingContext = tweenables.renderingContext;
 
         renderingContext.save();
-        renderingContext.fillStyle = "white";
+        renderingContext.fillStyle = "cyan";
         renderingContext.fillRect(0, 0, 1024, 700);
         renderingContext.fillStyle = "green";
         renderingContext.fillRect(0, 600, 1024, 200);
         renderingContext.restore();
-    }
+    };
 
-    // Then, we have "easing functions" that determine how
-    // intermediate frames are computed.
+    var secret = function (tweenables) {
+        var renderingContext = tweenables.renderingContext;
+        var secretImg = new Image();
+        secretImg.src = "cheesy.jpg";
+        renderingContext.drawImage(secretImg, 500 , 300);
+    }
 
     // Now, to actually define the animated sprites.  Each sprite
     // has a drawing function and an array of keyframes.
     var sprites = [
+        {
+            draw: secret,
+            keyframes: [
+                {
+                    frame: 0,
+                    tx: 0,
+                    ty: 0,
+                    sx: 0.40,
+                    sy: 0.40
+                },
+
+                {
+                    frame: 200,
+                    tx: 0,
+                    ty: 0,
+                    sx: 0.40,
+                    sy: 0.40
+                },
+
+                {
+                    frame: 400,
+                    tx: 0,
+                    ty: 0,
+                    sx: 0.40,
+                    sy: 0.40
+                }
+            ]
+        },
         {
             draw: scene,
             keyframes: [
@@ -44,22 +76,24 @@
                     ty: 0,
                     sx: 1,
                     sy: 1,
+                    ease: KeyframeTweener.quadEaseIn
                 },
 
                 {
-                    frame: 100,
-                    tx: 0,
+                    frame: 200,
+                    tx: 1000,
                     ty: 0,
                     sx: 1,
                     sy: 1,
+                    ease: KeyframeTweener.quadEaseOut
                 },
 
                 {
-                    frame: 300,
+                    frame: 400,
                     tx: 0,
                     ty: 0,
                     sx: 1,
-                    sy: 1,
+                    sy: 1
                 }
             ]
         },
@@ -79,13 +113,40 @@
                 },
 
                 {
-                    frame: 100,
+                    frame: 50,
                     tx: 900,
                     ty: 100,
                     sx: 0.85,
                     sy: 0.85,
+                    rotate: 45,
                     tweenlets: [
                         {label: "rayAngle", val: 0.1 * Math.PI}
+                    ],
+                    ease: KeyframeTweener.backAndForth
+                },
+
+                {
+                    frame: 100,
+                    tx: 900,
+                    ty: 150,
+                    sx: 0.85,
+                    sy: 0.85,
+                    rotate: 90,
+                    tweenlets: [
+                        {label: "rayAngle", val: -0.4 * Math.PI}
+                    ],
+                    ease: KeyframeTweener.backAndForth
+                },
+
+                {
+                    frame: 150,
+                    tx: 850,
+                    ty: 150,
+                    sx: 0.85,
+                    sy: 0.85,
+                    rotate: 135,
+                    tweenlets: [
+                        {label: "rayAngle", val: 0.3 * Math.PI}
                     ],
                     ease: KeyframeTweener.backAndForth
                 },
@@ -94,12 +155,14 @@
                     frame: 200,
                     tx: 850,
                     ty: 100,
-                    sx: 0.85,
-                    sy: 0.85,
+                    sx: 0.25,
+                    sy: 0.25,
+                    rotate: 180,
                     tweenlets: [
                         {label: "rayAngle", val: -0.3 * Math.PI}
                     ]
                 }
+
             ]
         },
         {
@@ -108,7 +171,7 @@
                 {
                     frame: 0,
                     tx: 100,
-                    ty: 100,
+                    ty: 200,
                     sx: 0.5,
                     sy: 0.5,
                     tweenlets: [
@@ -128,33 +191,286 @@
                         {label: "leftWingAngle", val: 0.6 * Math.PI},
                         {label: "rightWingAngle", val: 0.6 * Math.PI}
                     ],
-                    ease: KeyframeTweener.quadEaseInOut
+                    ease: KeyframeTweener.quadEaseIn
                 },
 
                 // The last keyframe does not need an easing function.
                 {
                     frame: 40,
                     tx: 180,
-                    ty: 500,
+                    ty: 300,
                     sx: 0.5,
                     sy: 0.5,
-                    rotate: 60,
+                    rotate: -20,
                     tweenlets: [
                         {label: "leftWingAngle", val: 0.9 * Math.PI},
                         {label: "rightWingAngle", val: 0.9 * Math.PI}
-                    ]
+                    ],
+                    ease: KeyframeTweener.quadEaseInOut
                 },
 
                 {
                     frame: 60,
-                    tx: 180,
-                    ty: 500,
+                    tx: 100,
+                    ty: 100,
                     sx: 0.5,
                     sy: 0.5,
-                    rotate: 60,
+                    rotate: 20,
+                    tweenlets: [
+                        {label: "leftWingAngle", val: 0.6 * Math.PI},
+                        {label: "rightWingAngle", val: 0.6 * Math.PI}
+                    ],
+                    ease: KeyframeTweener.quadEaseOut
+                },
+
+                {
+                    frame: 80,
+                    tx: 340,
+                    ty: 200,
+                    sx: 0.5,
+                    sy: 0.5,
+                    rotate: -20,
+                    tweenlets: [
+                        {label: "leftWingAngle", val: 0.3 * Math.PI},
+                        {label: "rightWingAngle", val: 0.3 * Math.PI}
+                    ],
+                    ease: KeyframeTweener.startStopGo
+                },
+
+                {
+                    frame: 100,
+                    tx: 80,
+                    ty: 120,
+                    sx: 0.5,
+                    sy: 0.5,
+                    rotate: 20,
+                    tweenlets: [
+                        {label: "leftWingAngle", val: -0.3 * Math.PI},
+                        {label: "rightWingAngle", val: -0.3 * Math.PI}
+                    ],
+                    ease: KeyframeTweener.backAndForth
+                },
+
+                {
+                    frame: 120,
+                    tx: 140,
+                    ty: 90,
+                    sx: 0.5,
+                    sy: 0.5,
+                    rotate: -20,
+                    tweenlets: [
+                        {label: "leftWingAngle", val: 0.3 * Math.PI},
+                        {label: "rightWingAngle", val: 0.3 * Math.PI}
+                    ],
+                    ease: KeyframeTweener.quadEaseInOut
+                },
+
+                {
+                    frame: 140,
+                    tx: 600,
+                    ty: 110,
+                    sx: 0.5,
+                    sy: 0.5,
+                    rotate: 20,
+                    tweenlets: [
+                        {label: "leftWingAngle", val: 0.6 * Math.PI},
+                        {label: "rightWingAngle", val: 0.6 * Math.PI}
+                    ],
+                    ease: KeyframeTweener.quadEaseIn
+                },
+
+                {
+                    frame: 160,
+                    tx: 60,
+                    ty: 450,
+                    sx: 0.5,
+                    sy: 0.5,
+                    rotate: -20,
                     tweenlets: [
                         {label: "leftWingAngle", val: 0.9 * Math.PI},
                         {label: "rightWingAngle", val: 0.9 * Math.PI}
+                    ],
+                    ease: KeyframeTweener.quadEaseOut
+                },
+
+                {
+                    frame: 180,
+                    tx: 850,
+                    ty: 300,
+                    sx: 0.5,
+                    sy: 0.5,
+                    rotate: 20,
+                    tweenlets: [
+                        {label: "leftWingAngle", val: 0.6 * Math.PI},
+                        {label: "rightWingAngle", val: 0.6 * Math.PI}
+                    ],
+                    ease: KeyframeTweener.slowToStart
+                },
+
+                {
+                    frame: 200,
+                    tx: 900,
+                    ty: 350,
+                    sx: 0.5,
+                    sy: 0.5,
+                    tweenlets: [
+                        {label: "leftWingAngle", val: 0.3 * Math.PI},
+                        {label: "rightWingAngle", val: 0.3 * Math.PI}
+                    ]
+                }
+            ]
+        },
+        {
+            draw: bird,
+            keyframes: [
+                {
+                    frame: 0,
+                    tx: 120,
+                    ty: 220,
+                    sx: 0.5,
+                    sy: 0.5,
+                    tweenlets: [
+                        {label: "leftWingAngle", val: -0.3 * Math.PI},
+                        {label: "rightWingAngle", val: -0.3 * Math.PI}
+                    ],
+                    ease: KeyframeTweener.slowToStart
+                },
+
+                {
+                    frame: 20,
+                    tx: 170,
+                    ty: 120,
+                    sx: 0.25,
+                    sy: 0.25,
+                    tweenlets: [
+                        {label: "leftWingAngle", val: 0.6 * Math.PI},
+                        {label: "rightWingAngle", val: 0.6 * Math.PI}
+                    ],
+                    ease: KeyframeTweener.quadEaseIn
+                },
+
+                // The last keyframe does not need an easing function.
+                {
+                    frame: 40,
+                    tx: 200,
+                    ty: 320,
+                    sx: 0.5,
+                    sy: 0.5,
+                    rotate: -20,
+                    tweenlets: [
+                        {label: "leftWingAngle", val: 0.9 * Math.PI},
+                        {label: "rightWingAngle", val: 0.9 * Math.PI}
+                    ],
+                    ease: KeyframeTweener.quadEaseInOut
+                },
+
+                {
+                    frame: 60,
+                    tx: 120,
+                    ty: 120,
+                    sx: 0.5,
+                    sy: 0.5,
+                    rotate: 20,
+                    tweenlets: [
+                        {label: "leftWingAngle", val: 0.6 * Math.PI},
+                        {label: "rightWingAngle", val: 0.6 * Math.PI}
+                    ],
+                    ease: KeyframeTweener.quadEaseOut
+                },
+
+                {
+                    frame: 80,
+                    tx: 360,
+                    ty: 220,
+                    sx: 0.5,
+                    sy: 0.5,
+                    rotate: -20,
+                    tweenlets: [
+                        {label: "leftWingAngle", val: 0.3 * Math.PI},
+                        {label: "rightWingAngle", val: 0.3 * Math.PI}
+                    ],
+                    ease: KeyframeTweener.startStopGo
+                },
+
+                {
+                    frame: 100,
+                    tx: 100,
+                    ty: 140,
+                    sx: 0.5,
+                    sy: 0.5,
+                    rotate: 20,
+                    tweenlets: [
+                        {label: "leftWingAngle", val: -0.3 * Math.PI},
+                        {label: "rightWingAngle", val: -0.3 * Math.PI}
+                    ],
+                    ease: KeyframeTweener.backAndForth
+                },
+
+                {
+                    frame: 120,
+                    tx: 160,
+                    ty: 110,
+                    sx: 0.5,
+                    sy: 0.5,
+                    rotate: -20,
+                    tweenlets: [
+                        {label: "leftWingAngle", val: 0.3 * Math.PI},
+                        {label: "rightWingAngle", val: 0.3 * Math.PI}
+                    ],
+                    ease: KeyframeTweener.quadEaseInOut
+                },
+
+                {
+                    frame: 140,
+                    tx: 620,
+                    ty: 130,
+                    sx: 0.5,
+                    sy: 0.5,
+                    rotate: 20,
+                    tweenlets: [
+                        {label: "leftWingAngle", val: 0.6 * Math.PI},
+                        {label: "rightWingAngle", val: 0.6 * Math.PI}
+                    ],
+                    ease: KeyframeTweener.quadEaseIn
+                },
+
+                {
+                    frame: 160,
+                    tx: 80,
+                    ty: 470,
+                    sx: 0.5,
+                    sy: 0.5,
+                    rotate: -20,
+                    tweenlets: [
+                        {label: "leftWingAngle", val: 0.9 * Math.PI},
+                        {label: "rightWingAngle", val: 0.9 * Math.PI}
+                    ],
+                    ease: KeyframeTweener.quadEaseOut
+                },
+
+                {
+                    frame: 180,
+                    tx: 870,
+                    ty: 320,
+                    sx: 0.5,
+                    sy: 0.5,
+                    rotate: 20,
+                    tweenlets: [
+                        {label: "leftWingAngle", val: 0.6 * Math.PI},
+                        {label: "rightWingAngle", val: 0.6 * Math.PI}
+                    ],
+                    ease: KeyframeTweener.slowToStart
+                },
+
+                {
+                    frame: 200,
+                    tx: 920,
+                    ty: 370,
+                    sx: 0.5,
+                    sy: 0.5,
+                    tweenlets: [
+                        {label: "leftWingAngle", val: 0.3 * Math.PI},
+                        {label: "rightWingAngle", val: 0.3 * Math.PI}
                     ]
                 }
             ]
@@ -164,7 +480,7 @@
             keyframes: [
                 {
                     frame: 0,
-                    tx: 20,
+                    tx: 120,
                     ty: 20,
                     sx: 0.25,
                     sy: 0.25,
@@ -179,8 +495,8 @@
 
                 {
                     frame: 30,
-                    tx: 800,
-                    ty: 20,
+                    tx: 130,
+                    ty: 400,
                     sx: 0.25,
                     sy: 0.25,
                     tweenlets: [
@@ -189,14 +505,29 @@
                         {label: "leftArmAngle", val: -0.9 * Math.PI},
                         {label: "rightArmAngle", val: -0.9 * Math.PI}
                     ],
-                    ease: KeyframeTweener.startStopGo
+                    ease: KeyframeTweener.quadEaseOut
+                },
+
+                {
+                    frame: 30,
+                    tx: 140,
+                    ty: 500,
+                    sx: 0.25,
+                    sy: 0.25,
+                    tweenlets: [
+                        {label: "leftLegAngle", val: -0.9 * Math.PI},
+                        {label: "rightLegAngle", val: -0.9 * Math.PI},
+                        {label: "leftArmAngle", val: -0.9 * Math.PI},
+                        {label: "rightArmAngle", val: -0.9 * Math.PI}
+                    ],
+                    ease: KeyframeTweener.quadEaseIn
                 },
 
                 // The last keyframe does not need an easing function.
                 {
                     frame: 80,
-                    tx: 80,
-                    ty: 900,
+                    tx: 180,
+                    ty: 600,
                     sx: 0.25,
                     sy: 0.25,
                     tweenlets: [
