@@ -8,7 +8,8 @@
     // Start with rectangles.
     renderingContext.fillStyle = "gray"; // For demonstrating the no-color case.
     Primitives.fillRect(renderingContext, 5, 5, 200, 100);
-    Primitives.fillRect(renderingContext, 210, 5, 200, 100, [0, 100, 255]);
+    Primitives.fillRect(renderingContext, 210, 5, 200, 100, 
+            [0, 100, 255]);
     Primitives.fillRect(renderingContext, 415, 5, 200, 100,
             [120, 0, 0], [0, 255, 0]);
     Primitives.fillRect(renderingContext, 620, 5, 200, 100,
@@ -23,12 +24,16 @@
     Primitives.lineBres3(renderingContext, 620, 210, 819, 110);
     Primitives.lineBresenham(renderingContext, 825, 210, 1024, 110);
 
-    // A few circles.
+    // A few NEW AND IMPROVED circles.
     Primitives.circleTrig(renderingContext, 105, 315, 100);
-    Primitives.circleDDA(renderingContext, 310, 315, 100);
-    Primitives.circleBres1(renderingContext, 515, 315, 100);
-    Primitives.circleBres2(renderingContext, 720, 315, 100);
-    Primitives.circleBres3(renderingContext, 925, 315, 100);
+    Primitives.circleDDA(renderingContext, 310, 315, 100, 
+            [0, 100, 255]);
+    Primitives.circleBres1(renderingContext, 515, 315, 100, 
+            [120, 0, 0], [0, 255, 0]);
+    Primitives.circleBres2(renderingContext, 720, 315, 100, 
+            [0, 0, 200], [0, 255, 0], [190, 140, 0]);
+    Primitives.circleBres3(renderingContext, 925, 315, 100,
+            [255, 0, 0], [255, 255, 0], [0, 200, 0], [0, 0, 100]);
 
     // And finally...polygon fills!
     renderingContext.save();
