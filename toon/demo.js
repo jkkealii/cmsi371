@@ -227,8 +227,8 @@
                     frame: 80,
                     tx: 340,
                     ty: 200,
-                    sx: 0.5,
-                    sy: 0.5,
+                    sx: 0.85,
+                    sy: 0.85,
                     rotate: -20,
                     tweenlets: [
                         {label: "leftWingAngle", val: 0.3 * Math.PI},
@@ -269,8 +269,8 @@
                     frame: 140,
                     tx: 600,
                     ty: 110,
-                    sx: 0.5,
-                    sy: 0.5,
+                    sx: 0.25,
+                    sy: 0.25,
                     rotate: 20,
                     tweenlets: [
                         {label: "leftWingAngle", val: 0.6 * Math.PI},
@@ -297,8 +297,8 @@
                     frame: 180,
                     tx: 850,
                     ty: 300,
-                    sx: 0.5,
-                    sy: 0.5,
+                    sx: 0.75,
+                    sy: 0.75,
                     rotate: 20,
                     tweenlets: [
                         {label: "leftWingAngle", val: 0.6 * Math.PI},
@@ -382,8 +382,8 @@
                     frame: 80,
                     tx: 360,
                     ty: 220,
-                    sx: 0.5,
-                    sy: 0.5,
+                    sx: 0.85,
+                    sy: 0.85,
                     rotate: -20,
                     tweenlets: [
                         {label: "leftWingAngle", val: 0.3 * Math.PI},
@@ -424,8 +424,8 @@
                     frame: 140,
                     tx: 620,
                     ty: 130,
-                    sx: 0.5,
-                    sy: 0.5,
+                    sx: 0.25,
+                    sy: 0.25,
                     rotate: 20,
                     tweenlets: [
                         {label: "leftWingAngle", val: 0.6 * Math.PI},
@@ -452,8 +452,8 @@
                     frame: 180,
                     tx: 870,
                     ty: 320,
-                    sx: 0.5,
-                    sy: 0.5,
+                    sx: 0.75,
+                    sy: 0.75,
                     rotate: 20,
                     tweenlets: [
                         {label: "leftWingAngle", val: 0.6 * Math.PI},
@@ -480,7 +480,7 @@
             keyframes: [
                 {
                     frame: 0,
-                    tx: 120,
+                    tx: 320,
                     ty: 20,
                     sx: 0.25,
                     sy: 0.25,
@@ -494,8 +494,8 @@
                 },
 
                 {
-                    frame: 30,
-                    tx: 130,
+                    frame: 60,
+                    tx: 330,
                     ty: 400,
                     sx: 0.25,
                     sy: 0.25,
@@ -509,8 +509,8 @@
                 },
 
                 {
-                    frame: 30,
-                    tx: 140,
+                    frame: 120,
+                    tx: 340,
                     ty: 500,
                     sx: 0.25,
                     sy: 0.25,
@@ -525,8 +525,8 @@
 
                 // The last keyframe does not need an easing function.
                 {
-                    frame: 80,
-                    tx: 180,
+                    frame: 180,
+                    tx: 380,
                     ty: 600,
                     sx: 0.25,
                     sy: 0.25,
@@ -537,6 +537,74 @@
                         {label: "rightArmAngle", val: 0.9 * Math.PI}
                     ],
                     rotate: 60 // Keyframe.rotate uses degrees.
+                }
+            ]
+        },
+        {
+            draw: man,
+            keyframes: [
+                {
+                    frame: 0,
+                    tx: 720,
+                    ty: 550,
+                    sx: 0.15,
+                    sy: 0.15,
+                    tweenlets: [
+                        {label: "leftLegAngle", val: 0.75 * Math.PI},
+                        {label: "rightLegAngle", val: 0.75 * Math.PI},
+                        {label: "leftArmAngle", val: 0.75 * Math.PI},
+                        {label: "rightArmAngle", val: 0.75 * Math.PI}
+                    ],
+                    ease: KeyframeTweener.startStopGo,
+                    rotate: -20
+                },
+
+                {
+                    frame: 50,
+                    tx: 630,
+                    ty: 550,
+                    sx: 0.15,
+                    sy: 0.15,
+                    tweenlets: [
+                        {label: "leftLegAngle", val: -0.75 * Math.PI},
+                        {label: "rightLegAngle", val: -0.75 * Math.PI},
+                        {label: "leftArmAngle", val: -0.75 * Math.PI},
+                        {label: "rightArmAngle", val: -0.75 * Math.PI}
+                    ],
+                    ease: KeyframeTweener.quadEaseOut,
+                    rotate: 20
+                },
+
+                {
+                    frame: 90,
+                    tx: 540,
+                    ty: 550,
+                    sx: 0.15,
+                    sy: 0.15,
+                    tweenlets: [
+                        {label: "leftLegAngle", val: -0.75 * Math.PI},
+                        {label: "rightLegAngle", val: -0.75 * Math.PI},
+                        {label: "leftArmAngle", val: -0.75 * Math.PI},
+                        {label: "rightArmAngle", val: -0.75 * Math.PI}
+                    ],
+                    ease: KeyframeTweener.quadEaseIn,
+                    rotate: -20
+                },
+
+                // The last keyframe does not need an easing function.
+                {
+                    frame: 180,
+                    tx: 400,
+                    ty: 550,
+                    sx: 0.15,
+                    sy: 0.15,
+                    tweenlets: [
+                        {label: "leftLegAngle", val: 0.75 * Math.PI},
+                        {label: "rightLegAngle", val: 0.75 * Math.PI},
+                        {label: "leftArmAngle", val: 0.75 * Math.PI},
+                        {label: "rightArmAngle", val: 0.75 * Math.PI}
+                    ],
+                    rotate: 20 // Keyframe.rotate uses degrees.
                 }
             ]
         }
