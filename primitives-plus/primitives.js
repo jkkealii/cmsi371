@@ -308,8 +308,8 @@ var Primitives = {
         var fillCircleNoColor = function () {
             // The rendering context will just ignore the
             // undefined colors in this case.
-            for (i = y; i < bottom; i += 1) {
-                for (j = x; j < right; j += 1) {
+            for (i = y - h; i < bottom; i += 1) {
+                for (j = x - w; j < right; j += 1) {
                     module.setPixel(context, j, i);
                 }
             }
@@ -317,8 +317,8 @@ var Primitives = {
 
         var fillCircleOneColor = function () {
             // Single color all the way through.
-            for (i = y; i < bottom; i += 1) {
-                for (j = x; j < right; j += 1) {
+            for (i = y - h; i < bottom; i += 1) {
+                for (j = x - w; j < right; j += 1) {
                     module.setPixel(context, j, i, c1[0], c1[1], c1[2]);
                 }
             }
@@ -326,8 +326,8 @@ var Primitives = {
 
         var fillCircleTwoColors = function () {
             // This modifies the color vertically only.
-            for (i = y; i < bottom; i += 1) {
-                for (j = x; j < right; j += 1) {
+            for (i = y - h; i < bottom; i += 1) {
+                for (j = x - w; j < right; j += 1) {
                     module.setPixel(context, j, i,
                             leftColor[0],
                             leftColor[1],
@@ -342,14 +342,14 @@ var Primitives = {
         };
 
         var fillCircleFourColors = function () {
-            for (i = y; i < bottom; i += 1) {
+            for (i = y - h; i < bottom; i += 1) {
                 // Move to the next "vertical" color level.
                 currentColor = [leftColor[0], leftColor[1], leftColor[2]];
                 hDelta = [(rightColor[0] - leftColor[0]) / w,
                           (rightColor[1] - leftColor[1]) / w,
                           (rightColor[2] - leftColor[2]) / w];
 
-                for (j = x; j < right; j += 1) {
+                for (j = x - w; j < right; j += 1) {
                     module.setPixel(context, j, i,
                             currentColor[0],
                             currentColor[1],
@@ -414,10 +414,10 @@ var Primitives = {
         var x = r;
         var y = 0;
 
-        while (x >= y) {
+        while (x >= y - r) {
             this.fillCircle(context, xc, yc, x, y, c1, c2, c3, c4);
-            x = x * c - y * s;
-            y = x * s + y * c;
+            x = (x * c) - (y * s);
+            y = (x * s) + (y * c);
         }
     },
 
@@ -427,7 +427,7 @@ var Primitives = {
         var x = r;
         var y = 0;
 
-        while (x >= y) {
+        while (x >= y - r) {
             this.fillCircle(context, xc, yc, x, y, c1, c2, c3, c4);
             x = x - (epsilon * y);
             y = y + (epsilon * x);
