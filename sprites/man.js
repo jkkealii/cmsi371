@@ -12,7 +12,7 @@
     manImg.addEventListener("load", function () {
         manLoaded = true;
     }, false);
-    manImg.src = "/sprites/man.png";
+    manImg.src = "../sprites/man.png";
     
     var drawArm = function (renderingContext, armOffset, armAngle) {
         renderingContext.save();
