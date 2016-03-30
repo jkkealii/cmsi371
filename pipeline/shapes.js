@@ -103,7 +103,7 @@ var Shapes = {
         };
     },
 
-    rightPyramid: function () {
+    pointy: function () {
         var X = 1,
             Y = 1,
             Z = 1;
@@ -124,6 +124,70 @@ var Shapes = {
         }
     },
 
+    longPointy: function () {
+        var X = 0.5,
+            Y = 0.5,
+            Z = 0.5;
+        return {
+            vertices: [
+                [0, Y, 0],
+                [0, 0, 0],
+                [X, 0, 0],
+                [0, Y, Z],
+                [0, 0, Z],
+                [X, 0, Z]
+            ],
 
+            indices: [
+                [0, 1, 2],
+                [0, 1, 4],
+                [0, 3, 4],
+                [0, 2, 3],
+                [2, 3, 5],
+                [1, 2, 4],
+                [2, 5, 4],
+                [3, 4, 5]
+            ]
+        }
+    },
+
+    roundy: function (side, up, r) {
+        var vertices = [], indices = [];
+        var up = up, side = side;
+        var r = r;
+
+        for (i = 0; i < side + 1; i++) {
+            var deeg = i * Math.PI / side;
+            // math stuff
+            var sine = Math.sin(deeg);
+            var cosine = Math.cos(deeg);
+
+            for (var k = 0; k < up + 1; k++) {
+                // special magical formula that does it all
+                var magic = k * 2 * Math.PI / up;
+
+                var x = r * Math.cos(magic) * sine;
+                var y = r * cosine;
+                var z = r * Math.sin(magic) * sine;
+
+                vertices.push([x, y, z]);
+           }
+        }
+
+        for (i = 0; i < side; i++) {
+            for (k = 0; k < up; k++) {
+                // so complicated, it would take days to explain
+                var upper = i * (up + 1) + k;
+                var lower = upper + up + 1;
+
+                indices.push([upper, lower, upper + 1]);
+                indices.push([lower, lower + 1, upper + 1]);
+            }
+        }
+
+        return {
+            vertices: vertices, indices: indices
+        }
+    },
 
 };

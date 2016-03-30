@@ -1,8 +1,4 @@
 
-/*
- * For maximum modularity, we place everything within a single function that
- * takes the canvas that it will need.
- */
 (function (canvas) {
 
     // Because many of these variables are best initialized then immediately
@@ -130,35 +126,35 @@
     // Build the objects to display.
     objectsToDraw = [
         // Three solid triangles.
-        {
-            color: { r: 1.0, g: 0, b: 1.0 },
-            vertices: [].concat(
-                [ 0.0, 0.0, 0.0 ],
-                [ 0.5, 0.0, -0.75 ],
-                [ 0.0, 0.5, 0.0 ]
-            ),
-            mode: gl.TRIANGLES
-        },
+        // {
+        //     color: { r: 1.0, g: 0, b: 1.0 },
+        //     vertices: [].concat(
+        //         [ 0.0, 0.0, 0.0 ],
+        //         [ 0.5, 0.0, -0.75 ],
+        //         [ 0.0, 0.5, 0.0 ]
+        //     ),
+        //     mode: gl.TRIANGLES
+        // },
 
-        {
-            color: { r: 1.0, g: 1.0, b: 0 },
-            vertices: [].concat(
-                [ 0.25, 0.0, -0.5 ],
-                [ 0.75, 0.0, -0.5 ],
-                [ 0.25, 0.5, -0.5 ]
-            ),
-            mode: gl.TRIANGLES
-        },
+        // {
+        //     color: { r: 1.0, g: 1.0, b: 0 },
+        //     vertices: [].concat(
+        //         [ 0.25, 0.0, -0.5 ],
+        //         [ 0.75, 0.0, -0.5 ],
+        //         [ 0.25, 0.5, -0.5 ]
+        //     ),
+        //     mode: gl.TRIANGLES
+        // },
 
-        {
-            color: { r: 0.0, g: 1.0, b: 1.0 },
-            vertices: [].concat(
-                [ -0.25, 0.0, 0.5 ],
-                [ 0.5, 0.0, 0.5 ],
-                [ -0.25, 0.5, 0.5 ]
-            ),
-            mode: gl.TRIANGLES
-        },
+        // {
+        //     color: { r: 0.0, g: 1.0, b: 1.0 },
+        //     vertices: [].concat(
+        //         [ -0.25, 0.0, 0.5 ],
+        //         [ 0.5, 0.0, 0.5 ],
+        //         [ -0.25, 0.5, 0.5 ]
+        //     ),
+        //     mode: gl.TRIANGLES
+        // },
 
         // Shape library demonstration.
         // {
@@ -169,8 +165,20 @@
 
         {
             color: { r: 0.75, g: 0.25, b: 0.25 },
-            vertices: new Shape(Shapes.rightPyramid()).toRawTriangleArray(),
+            vertices: new Shape(Shapes.pointy()).toRawLineArray(),
+            mode: gl.LINES
+        },
+
+        {
+            color: { r: 0.25, g: 0.80, b: 0.55 },
+            vertices: new Shape(Shapes.longPointy()).toRawTriangleArray(),
             mode: gl.TRIANGLES
+        },
+
+        {
+            color: { r: 0.0, g: 0.00, b: 0.45 },
+            vertices: new Shape(Shapes.roundy(20, 20, 0.75)).toRawLineArray(),
+            mode: gl.LINES
         }
     ];
 
@@ -314,4 +322,6 @@
         }
     });
 
-}(document.getElementById("hello-webgl")));
+}(document.getElementById("3Dshapes")));
+
+
