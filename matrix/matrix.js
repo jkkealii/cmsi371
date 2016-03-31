@@ -1,3 +1,49 @@
+var Matrix = function ( input ) {
+    if (input) {
+        this.matrix = input;
+    } else {
+        this.matrix = [
+            [1, 0, 0, 0],
+            [0, 1, 0, 0],
+            [0, 0, 1, 0],
+            [0, 0, 0, 1]
+        ];
+    }
+};
+
+Matrix.prototype.mult = function ( multiplicand ) {
+    var thisNumRows = this.matrix.length, thisNumCols = this.matrix[0].length;
+    var multiplicandNumRows = multiplicand.matrix.length, multiplicandNumCols = multiplicand.matrix[0].length;
+    var res = new Array(thisNumRows);                    // initialize array of rows
+    for (var r = 0; r < thisNumRows; ++r) {
+        res[r] = new Array(multiplicandNumCols);      // initialize the current row
+        for (var c = 0; c < multiplicandNumCols; ++c) {
+            res[r][c] = 0;                            // initialize the current cell
+            for (var i = 0; i < thisNumCols; ++i) {
+                res[r][c] += this.matrix[r][i] * multiplicand.matrix[i][c];
+            }
+        }
+    }
+    return new Matrix( res );
+};
+
+Matrix.trans = function ( deltx, delty, deltz ) {
+    return new Matrix([
+            [1, 0, 0, deltx],
+            [0, 1, 0, delty],
+            [0, 0, 1, deltz],
+            [0, 0, 0, 1]
+        ]);
+};
+
+Matrix.scal = function ( deltx, delty, deltz ) {
+    return new Matrix([
+            [deltx, 0, 0, 0],
+            [0, delty, 0, 0],
+            [0, 0, deltz, 0],
+            [0, 0, 0, 1]
+        ]);
+};
 
 var Vector = (function () {
     // Define the constructor.

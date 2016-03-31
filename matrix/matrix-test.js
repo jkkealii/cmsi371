@@ -1,6 +1,67 @@
-/*
- * Unit tests for our vector object.
- */
+QUnit.test( "hello test", function ( assert ) {
+    assert.ok( 1 == "1", "Passed!" );
+});
+
+QUnit.test("constructor test", function ( assert ) {
+    var subject = new Matrix([
+            [1, 0, 0, 0],
+            [0, 1, 0, 0],
+            [0, 0, 1, 0],
+            [0, 0, 0, 1]
+        ]);
+    var check = [
+            [1, 0, 0, 0],
+            [0, 1, 0, 0],
+            [0, 0, 1, 0],
+            [0, 0, 0, 1]
+        ];
+    assert.deepEqual(subject.matrix, check, "arg supplied, pass");
+    var subject1 = new Matrix();
+    assert.deepEqual(subject1.matrix, check, "no arg supplied, pass");
+});
+
+QUnit.test("multiplication test", function ( assert ) {
+    var subject = new Matrix([
+            [2, 4, 6, 8],
+            [8, 6, 4, 2],
+            [1, 3, 5, 7],
+            [7, 5, 3, 1]
+        ]);
+    var multiplicand = new Matrix([
+            [1, 3, 5, 7],
+            [7, 5, 3, 1],
+            [2, 4, 6, 8],
+            [8, 6, 4, 2]
+        ]);
+    var check = new Matrix([
+            [106, 98, 90, 82],
+            [74, 82, 90, 98],
+            [88, 80, 72, 64],
+            [56, 64, 72, 80]
+        ]);
+    assert.deepEqual(subject.mult(multiplicand), check, "multiply");
+});
+
+QUnit.test("translation test", function ( assert ) {
+    var check = new Matrix([
+            [1, 0, 0, 6],
+            [0, 1, 0, 9],
+            [0, 0, 1, 12],
+            [0, 0, 0, 1]
+        ]);
+    assert.deepEqual(Matrix.trans( 6, 9, 12 ), check, "translate");
+});
+
+QUnit.test("scale test", function ( assert ) {
+    var check = new Matrix([
+            [3, 0, 0, 0],
+            [0, 8, 0, 0],
+            [0, 0, 13, 0],
+            [0, 0, 0, 1]
+        ]);
+    assert.deepEqual(Matrix.scal( 3, 8, 13 ), check, "scale");
+});
+
 $(function () {
 
     // This suite checks instantiation basics.
