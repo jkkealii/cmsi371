@@ -1,12 +1,24 @@
-/*
- * This module defines/generates vertex arrays for certain predefined shapes.
- * The "shapes" are returned as indexed vertices, with utility functions for
- * converting these into "raw" coordinate arrays.
- */
+
 
 var Shape = function (shape) {
     this.vertices = shape.vertices;
     this.indices = shape.indices;
+}
+
+Shape.prototype.manufactureYoungster = function (shape) {
+    if (this.children) {
+        this.children = this.children.concat(shape);
+    } else {
+        this.children = [].concat(shape);
+    }
+}
+
+Shape.prototype.razeYoungster = function (shape) {
+    if (shape) {
+        this.children.splice(this.children.indexOf(shape), 1);
+    } else {
+        this.children.pop();
+    }
 }
 
 Shape.prototype.toRawLineArray = function () {

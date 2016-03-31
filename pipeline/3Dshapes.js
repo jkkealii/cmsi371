@@ -123,45 +123,13 @@
     gl.clearColor(0.0, 0.0, 0.0, 0.0);
     gl.viewport(0, 0, canvas.width, canvas.height);
 
-    // Build the objects to display.
     objectsToDraw = [
-        // Three solid triangles.
-        // {
-        //     color: { r: 1.0, g: 0, b: 1.0 },
-        //     vertices: [].concat(
-        //         [ 0.0, 0.0, 0.0 ],
-        //         [ 0.5, 0.0, -0.75 ],
-        //         [ 0.0, 0.5, 0.0 ]
-        //     ),
-        //     mode: gl.TRIANGLES
-        // },
 
-        // {
-        //     color: { r: 1.0, g: 1.0, b: 0 },
-        //     vertices: [].concat(
-        //         [ 0.25, 0.0, -0.5 ],
-        //         [ 0.75, 0.0, -0.5 ],
-        //         [ 0.25, 0.5, -0.5 ]
-        //     ),
-        //     mode: gl.TRIANGLES
-        // },
-
-        // {
-        //     color: { r: 0.0, g: 1.0, b: 1.0 },
-        //     vertices: [].concat(
-        //         [ -0.25, 0.0, 0.5 ],
-        //         [ 0.5, 0.0, 0.5 ],
-        //         [ -0.25, 0.5, 0.5 ]
-        //     ),
-        //     mode: gl.TRIANGLES
-        // },
-
-        // Shape library demonstration.
-        // {
-        //     color: { r: 1, g: 0.5, b: 0 },
-        //     vertices: new Shape(Shapes.icosahedron()).toRawLineArray(),
-        //     mode: gl.LINES
-        // },
+        {
+            color: { r: 1, g: 0.5, b: 0 },
+            vertices: new Shape(Shapes.icosahedron()).toRawLineArray(),
+            mode: gl.LINES
+        },
 
         {
             color: { r: 0.75, g: 0.25, b: 0.25 },
@@ -177,7 +145,7 @@
 
         {
             color: { r: 0.0, g: 0.00, b: 0.45 },
-            vertices: new Shape(Shapes.roundy(20, 20, 0.75)).toRawLineArray(),
+            vertices: new Shape(Shapes.roundy(24, 24, 0.75)).toRawLineArray(),
             mode: gl.LINES
         }
     ];

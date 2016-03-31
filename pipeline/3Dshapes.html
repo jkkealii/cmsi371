@@ -4,6 +4,7 @@
         <meta charset="UTF-8"/>
         <title>shapetown, shapecity</title>
         <link rel="stylesheet" href="3Dshapes.css" />
+        <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-1.23.0.css">
     </head>
     <body>
         <h2 style="size:15px; text-decoration: line-through;">
@@ -13,6 +14,11 @@
         <canvas id="3Dshapes" width="596" height="596">
 
         </canvas>
+
+        <div id="qunit"></div>
+        <div id="qunit-fixture"></div>
+        <script src="https://code.jquery.com/qunit/qunit-1.23.0.js"></script>
+        <script src="3DshapesTests.js"></script>
 
         <!-- jQuery makes some things more convenient. -->
         <script src="http://code.jquery.com/jquery-latest.min.js"></script>
