@@ -4,33 +4,19 @@
         <meta charset="UTF-8"/>
         <title>shapetown, shapecity</title>
         <link rel="stylesheet" href="3Dshapes.css" />
-        <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-1.23.0.css">
     </head>
     <body>
         <h2 style="size:15px; text-decoration: line-through;">
             SHAPE CITY MITCH, SHAPE SHAPE CITY MITCH
         </h2>
 
-        <canvas id="3Dshapes" width="596" height="596">
-
+        <canvas id="3Dshapes" width="600" height="600">
         </canvas>
 
-        <!-- jQuery makes some things more convenient. -->
         <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-
-        <!-- GLSLUtilities is a starting point for holding functionality that
-             is common to many WebGL programs. -->
         <script src="glsl-utilities.js"></script>
-
-        <!-- Shapes is a library that generates "canned" shapes. -->
+        <script src="../matrix.js"></script>
         <script src="shape.js"></script>
-
-        <!-- Set up shaders: we've placed the source in script elements for
-            simplicity.  Shaders are ideally kept in separate files for easier
-            maintenance, but in that situation, additional code and security
-            constraints are involved. -->
-
-        <!-- The vertex shader is a complete pass-through. -->
         <script id="vertex-shader" type="x-shader/x-vertex">
             #ifdef GL_ES
             precision highp float;
@@ -38,18 +24,18 @@
 
             attribute vec3 vertexPosition;
 
-            // Note this new additional output.
             attribute vec3 vertexColor;
             varying vec4 finalVertexColor;
             uniform mat4 rotationMatrix;
+            uniform mat4 projectionMatrix;
+            uniform mat4 modelViewMatrix;
 
             void main(void) {
-                gl_Position = rotationMatrix * vec4(vertexPosition, 1.0);
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(vertexPosition, 1.0);
                 finalVertexColor = vec4(vertexColor, 1.0);
             }
         </script>
 
-        <!-- The fragment shader produces a single unconditional color. -->
         <script id="fragment-shader" type="x-shader/x-fragment">
             #ifdef GL_ES
             precision highp float;
@@ -58,14 +44,10 @@
             varying vec4 finalVertexColor;
 
             void main(void) {
-                // We vary the color based on the fragment's z coordinate,
-                // which, at this point, ranges from 0 (near) to 1 (far).
-                // Note the ".rgb" subselector.
                 gl_FragColor = vec4((1.0 - gl_FragCoord.z) * finalVertexColor.rgb, 1.0);
             }
         </script>
 
-        <!-- This script sets up the specific scene for this page. -->
         <script src="3Dshapes.js"></script>
   </body>
 </html>
