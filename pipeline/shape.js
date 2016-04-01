@@ -25,30 +25,29 @@ Shape.prototype.scale = function (deltx, delty, deltz) {
     this.transform = this.transform.mult(scale);
 };
 
-Shape.prototype.draw = function (vertexColor, modelViewMatrix, vertexPosition) {
+Shape.prototype.draw = function (vertexColor, modelViewMatrix, vertexPosition, gl) {
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.colorBuffer);
+    gl.vertexAttribPointer(vertexColor, 3, gl.FLOAT, false, 0, 0);
 
-    this.bindBuffer(this.ARRAY_BUFFER, this.colorBuffer);
-    this.vertexAttribPointer(vertexColor, 3, this.FLOAT, false, 0, 0);
+    gl.uniformMatrix4fv(modelViewMatrix, gl.FALSE, this.transform.toGL());
 
-    this.uniformMatrix4fv(modelViewMatrix, this.FALSE, this.transform.toGL());
-
-    this.bindBuffer(this.ARRAY_BUFFER, this.buffer);
-    this.vertexAttribPointer(vertexPosition, 3, this.FLOAT, false, 0, 0);
-    this.drawArrays(this.mode, 0, this.vertices.length / 3);
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
+    gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false, 0, 0);
+    gl.drawArrays(this.gl_mode, 0, this.rertices.length / 3);
 };
 
 Shape.prototype.g_ready = function (gl) {
-    var vertices = [];
+    this.rertices = [];
     if (this.mode == "LINES") {
-        vertices = this.toRawLineArray();
+        this.rertices = this.toRawLineArray();
     } else if (this.mode == "TRIANGLES") {
-        vertices = this.toRawTriangleArray();
+        this.rertices = this.toRawTriangleArray();
     }
-    this.buffer = GLSLUtilities.initVertexBuffer(gl, vertices);
+    this.buffer = GLSLUtilities.initVertexBuffer(gl, this.rertices);
 
     if (!this.colors) {
         this.colors = [];
-        for (j = 0, maxj = vertices.length / 3;
+        for (j = 0, maxj = this.rertices.length / 3;
                 j < maxj; j += 1) {
             this.colors = this.colors.concat(
                 this.color.r,

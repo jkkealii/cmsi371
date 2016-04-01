@@ -117,7 +117,7 @@
         new Shape({ r: 1, g: 0.5, b: 0 }, Shapes.icosahedron(), gl.LINES, "LINES", { x: 0.0, y: 1.0, z: 1.0 }),
         new Shape({ r: 0.75, g: 0.25, b: 0.25 }, Shapes.pointy(), gl.LINES, "LINES", { x: 1.0, y: 1.0, z: 0.0 }),
         new Shape({ r: 0.25, g: 0.80, b: 0.55 }, Shapes.longPointy(), gl.TRIANGLES, "TRIANGLES", { x: 1.0, y: 0.0, z: 1.0 }),
-        new Shape({ r: 0.0, g: 0.00, b: 0.45 }, Shapes.roundy(24, 24, 1.75), gl.LINES, "LINES", { x: 0.0, y: 1.0, z: 0.0 })
+        new Shape({ r: 0.0, g: 0.00, b: 0.45 }, Shapes.roundy(24, 24, 1.5), gl.LINES, "LINES", { x: 0.0, y: 1.0, z: 0.0 })
     ];
 
     // for (i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
@@ -187,11 +187,18 @@
     //     gl.drawArrays(object.mode, 0, object.vertices.length / 3);
     // };
 
+    for (var i = 0; i < objectsToDraw.length; i++) {
+        objectsToDraw[i].g_ready(gl);
+    }
+
     drawScene = function () {
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
         for (i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
-            objectsToDraw[i].draw(vertexColor, modelViewMatrix, vertexPosition);
+            if (objectsToDraw[i].axis) {
+                objectsToDraw[i].rotate(currentRotation, objectsToDraw[i].axis.x, objectsToDraw[i].axis.y, objectsToDraw[i].axis.z);
+            }
+            objectsToDraw[i].draw(vertexColor, modelViewMatrix, vertexPosition, gl);
         }
         gl.flush();
     };
