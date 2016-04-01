@@ -1,13 +1,64 @@
 
 
-var Shape = function (color, shape, mode, axis) {
+var Shape = function (color, shape, gl_mode, mode, axis) {
     this.transform = new Matrix();
     this.vertices = shape.vertices;
     this.indices = shape.indices;
     this.color = color;
     this.axis = axis;
+    this.gl_mode = gl_mode;
     this.mode = mode;
 }
+
+Shape.prototype.rotate = function (angle, deltx, delty, deltz) {
+    var rotation = Matrix.rot(angle, deltx, delty, deltz);
+    this.transform = this.transform.mult(rotation);
+};
+
+Shape.prototype.translate = function (deltx, delty, deltz) {
+    var translate = Matrix.trans(deltx, delty, deltz);
+    this.transform = this.transform.mult(translate);
+};
+
+Shape.prototype.scale = function (deltx, delty, deltz) {
+    var scale = Matrix.scal(detlx, delty, deltz);
+    this.transform = this.transform.mult(scale);
+};
+
+Shape.prototype.draw = function (vertexColor, modelViewMatrix, vertexPosition) {
+
+    this.bindBuffer(this.ARRAY_BUFFER, this.colorBuffer);
+    this.vertexAttribPointer(vertexColor, 3, this.FLOAT, false, 0, 0);
+
+    this.uniformMatrix4fv(modelViewMatrix, this.FALSE, this.transform.toGL());
+
+    this.bindBuffer(this.ARRAY_BUFFER, this.buffer);
+    this.vertexAttribPointer(vertexPosition, 3, this.FLOAT, false, 0, 0);
+    this.drawArrays(this.mode, 0, this.vertices.length / 3);
+};
+
+Shape.prototype.g_ready = function (gl) {
+    var vertices = [];
+    if (this.mode == "LINES") {
+        vertices = this.toRawLineArray();
+    } else if (this.mode == "TRIANGLES") {
+        vertices = this.toRawTriangleArray();
+    }
+    this.buffer = GLSLUtilities.initVertexBuffer(gl, vertices);
+
+    if (!this.colors) {
+        this.colors = [];
+        for (j = 0, maxj = vertices.length / 3;
+                j < maxj; j += 1) {
+            this.colors = this.colors.concat(
+                this.color.r,
+                this.color.g,
+                this.color.b
+            );
+        }
+    }
+    this.colorBuffer = GLSLUtilities.initVertexBuffer(gl, this.colors);
+};
 
 Shape.prototype.manufactureYoungster = function (shape) {
     if (this.children) {
@@ -68,52 +119,6 @@ Shape.prototype.toRawTriangleArray = function () {
 
     return result;
 }
-
-Shape.prototype.rotate = function (angle, deltx, delty, deltz) {
-    var rotation = Matrix.rot(angle, deltx, delty, deltz);
-    this.transform = this.transform.mult(rotation);
-};
-
-Shape.prototype.translate = function (deltx, delty, deltz) {
-    var translate = Matrix.trans(deltx, delty, deltz);
-    this.transform = this.transform.mult(translate);
-};
-
-Shape.prototype.scale = function (deltx, delty, deltz) {
-    var scale = Matrix.scal(detlx, delty, deltz);
-    this.transform = this.transform.mult(scale);
-};
-
-Shape.prototype.draw = function (vertexColor, modelViewMatrix, vertexPosition) {
-
-    this.buffer = GLSLUtilities.initVertexBuffer(this.gl,
-            this.vertices);
-
-    if (!this.colors) {
-        this.colors = [];
-        for (j = 0, maxj = this.vertices.length / 3;
-                j < maxj; j += 1) {
-            this.colors = this.colors.concat(
-                this.color.r,
-                this.color.g,
-                this.color.b
-            );
-        }
-    }
-    this.colorBuffer = GLSLUtilities.initVertexBuffer(this.gl,
-            this.colors);
-
-    this.bindBuffer(this.ARRAY_BUFFER, this.colorBuffer);
-    this.vertexAttribPointer(vertexColor, 3, this.FLOAT, false, 0, 0);
-
-    this.uniformMatrix4fv(modelViewMatrix, this.FALSE, this.transform.toGL());
-    var mode;
-    if (this.mode == "LINES")
-
-    this.bindBuffer(this.ARRAY_BUFFER, this.buffer);
-    this.vertexAttribPointer(vertexPosition, 3, this.FLOAT, false, 0, 0);
-    this.drawArrays(this.mode, 0, this.vertices.length / 3);
-};
 
 var Shapes = {
     icosahedron: function () {

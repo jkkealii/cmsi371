@@ -114,50 +114,30 @@
     gl.viewport(0, 0, canvas.width, canvas.height);
 
     objectsToDraw = [
-        {
-            color: { r: 1, g: 0.5, b: 0 },
-            vertices: new Shape(Shapes.icosahedron()).toRawLineArray(),
-            mode: gl.LINES,
-            axis: { x: 0.0, y: 1.0, z: 1.0 }
-        },
-
-        {
-            new Shape({ r: 0.75, g: 0.25, b: 0.25 }, Shapes.pointy(), gl.LINES, { x: 1.0, y: 1.0, z: 0.0 })
-        },
-
-        {
-            color: { r: 0.25, g: 0.80, b: 0.55 },
-            vertices: new Shape(Shapes.longPointy()).toRawTriangleArray(),
-            mode: gl.TRIANGLES,
-            axis: { x: 1.0, y: 0.0, z: 1.0 }
-        },
-
-        {
-            color: { r: 0.0, g: 0.00, b: 0.45 },
-            vertices: new Shape(Shapes.roundy(24, 24, 1.75)).toRawLineArray(),
-            mode: gl.LINES,
-            axis: { x: 0.0, y: 1.0, z: 0.0 }
-        }
+        new Shape({ r: 1, g: 0.5, b: 0 }, Shapes.icosahedron(), gl.LINES, "LINES", { x: 0.0, y: 1.0, z: 1.0 }),
+        new Shape({ r: 0.75, g: 0.25, b: 0.25 }, Shapes.pointy(), gl.LINES, "LINES", { x: 1.0, y: 1.0, z: 0.0 }),
+        new Shape({ r: 0.25, g: 0.80, b: 0.55 }, Shapes.longPointy(), gl.TRIANGLES, "TRIANGLES", { x: 1.0, y: 0.0, z: 1.0 }),
+        new Shape({ r: 0.0, g: 0.00, b: 0.45 }, Shapes.roundy(24, 24, 1.75), gl.LINES, "LINES", { x: 0.0, y: 1.0, z: 0.0 })
     ];
 
-    for (i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
-        objectsToDraw[i].buffer = GLSLUtilities.initVertexBuffer(gl,
-                objectsToDraw[i].vertices);
+    // for (i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
+    //     objectsToDraw[i].buffer = GLSLUtilities.initVertexBuffer(gl,
+    //             objectsToDraw[i].vertices);
 
-        if (!objectsToDraw[i].colors) {
-            objectsToDraw[i].colors = [];
-            for (j = 0, maxj = objectsToDraw[i].vertices.length / 3;
-                    j < maxj; j += 1) {
-                objectsToDraw[i].colors = objectsToDraw[i].colors.concat(
-                    objectsToDraw[i].color.r,
-                    objectsToDraw[i].color.g,
-                    objectsToDraw[i].color.b
-                );
-            }
-        }
-        objectsToDraw[i].colorBuffer = GLSLUtilities.initVertexBuffer(gl,
-                objectsToDraw[i].colors);
-    }
+    //     if (!objectsToDraw[i].colors) {
+    //         objectsToDraw[i].colors = [];
+    //         for (j = 0, maxj = objectsToDraw[i].vertices.length / 3;
+    //                 j < maxj; j += 1) {
+    //             objectsToDraw[i].colors = objectsToDraw[i].colors.concat(
+    //                 objectsToDraw[i].color.r,
+    //                 objectsToDraw[i].color.g,
+    //                 objectsToDraw[i].color.b
+    //             );
+    //         }
+    //     }
+    //     objectsToDraw[i].colorBuffer = GLSLUtilities.initVertexBuffer(gl,
+    //             objectsToDraw[i].colors);
+    // }
 
     shaderProgram = GLSLUtilities.initSimpleShaderProgram(
         gl,
@@ -190,28 +170,28 @@
     modelViewMatrix = gl.getUniformLocation(shaderProgram, "modelViewMatrix");
     projectionMatrix = gl.getUniformLocation(shaderProgram, "projectionMatrix");
 
-    drawObject = function (object) {
-        gl.bindBuffer(gl.ARRAY_BUFFER, object.colorBuffer);
-        gl.vertexAttribPointer(vertexColor, 3, gl.FLOAT, false, 0, 0);
+    // drawObject = function (object) {
+    //     gl.bindBuffer(gl.ARRAY_BUFFER, object.colorBuffer);
+    //     gl.vertexAttribPointer(vertexColor, 3, gl.FLOAT, false, 0, 0);
 
-        gl.uniformMatrix4fv(modelViewMatrix, gl.FALSE, new Float32Array(object.axis ?
-                getRotationMatrix(currentRotation, object.axis.x, object.axis.y, object.axis.z) :
-                [1, 0, 0, 0,
-                 0, 1, 0, 0,
-                 0, 0, 1, 0,
-                 0, 0, 0, 1]
-            ));
+    //     gl.uniformMatrix4fv(modelViewMatrix, gl.FALSE, new Float32Array(object.axis ?
+    //             getRotationMatrix(currentRotation, object.axis.x, object.axis.y, object.axis.z) :
+    //             [1, 0, 0, 0,
+    //              0, 1, 0, 0,
+    //              0, 0, 1, 0,
+    //              0, 0, 0, 1]
+    //         ));
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, object.buffer);
-        gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false, 0, 0);
-        gl.drawArrays(object.mode, 0, object.vertices.length / 3);
-    };
+    //     gl.bindBuffer(gl.ARRAY_BUFFER, object.buffer);
+    //     gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false, 0, 0);
+    //     gl.drawArrays(object.mode, 0, object.vertices.length / 3);
+    // };
 
     drawScene = function () {
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
         for (i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
-            drawObject(objectsToDraw[i]);
+            objectsToDraw[i].draw(vertexColor, modelViewMatrix, vertexPosition);
         }
         gl.flush();
     };
