@@ -229,14 +229,14 @@
         }
         gl.flush();
     };
-    gl.uniformMatrix4fv(projectionMatrix, gl.FALSE, new Float32Array(getOrthoMatrix(
+    gl.uniformMatrix4fv(projectionMatrix, gl.FALSE, Matrix.orthProj(
         -2 * (canvas.width / canvas.height),
         2 * (canvas.width / canvas.height),
         -2,
         2,
         -10,
         10
-    )));
+    ).toGL());
 
     previousTimestamp = null;
     advanceScene = function (timestamp) {
