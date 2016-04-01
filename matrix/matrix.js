@@ -9,6 +9,8 @@ var Matrix = function ( input ) {
             [0, 0, 0, 1]
         ];
     }
+    this.rowLength = this.matrix.length;
+    this.columnLength = this.matrix[0].length;
 };
 
 Matrix.prototype.mult = function ( multiplicand ) {
@@ -45,152 +47,86 @@ Matrix.scal = function ( deltx, delty, deltz ) {
         ]);
 };
 
-var Vector = (function () {
-    // Define the constructor.
-    var vector = function () {
-        this.elements = [].slice.call(arguments);
-    },
-    
-        // A private method for checking dimensions,
-        // throwing an exception when different.
-        checkDimensions = function (v1, v2) {
-            if (v1.dimensions() !== v2.dimensions()) {
-                throw "Vectors have different dimensions";
-            }
-        };
+Matrix.rot = function (angle, x, y, z) {
+    var axisLength = Math.sqrt((x * x) + (y * y) + (z * z));
+    var s = Math.sin(angle * Math.PI / 180.0);
+    var c = Math.cos(angle * Math.PI / 180.0);
+    var oneMinusC = 1.0 - c;
+    var x2, y2, z2, xy, yz, xz, xs, ys, zs;
 
-    // Basic methods.
-    vector.prototype.dimensions = function () {
-        return this.elements.length;
-    };
+    x /= axisLength;
+    y /= axisLength;
+    z /= axisLength;
 
-    vector.prototype.x = function () {
-        return this.elements[0];
-    };
+    x2 = x * x;
+    y2 = y * y;
+    z2 = z * z;
+    xy = x * y;
+    yz = y * z;
+    xz = x * z;
+    xs = x * s;
+    ys = y * s;
+    zs = z * s;
 
-    vector.prototype.y = function () {
-        return this.elements[1];
-    };
+    return new Matrix ([
+        [(x2 * oneMinusC) + c,
+        (xy * oneMinusC) + zs,
+        (xz * oneMinusC) - ys,
+        0.0]
+        ,
 
-    vector.prototype.z = function () {
-        return this.elements[2];
-    };
+        [(xy * oneMinusC) - zs,
+        (y2 * oneMinusC) + c,
+        (yz * oneMinusC) + xs,
+        0.0]
+        ,
 
-    vector.prototype.w = function () {
-        return this.elements[3];
-    };
+        [(xz * oneMinusC) + ys,
+        (yz * oneMinusC) - xs,
+        (z2 * oneMinusC) + c,
+        0.0]
+        ,
 
-    // Addition and subtraction.
-    vector.prototype.add = function (v) {
-        var result = new Vector(),
-            i,
-            max;
+        [0.0, 0.0, 0.0, 1.0]
+    ]);
+};
 
-        // Dimensionality check.
-        checkDimensions(this, v);
+Matrix.orthProj = function ( top, bottom, left, right, near, far) {
+    var twooverRminusL = 2 / (right - left);
+    var negRplusLoverRminusL = -(right + left) / (right - left);
+    var twooverTminusB = 2 / (top - bottom);
+    var negTplusBoverTminusB = -(top + bottom) / (top - bottom);
+    var negtwooverFminusN = -2 / (far - near);
+    var negFplusNoverFminusN = -(far + near) / (far - near);
 
-        for (i = 0, max = this.dimensions(); i < max; i += 1) {
-            result.elements[i] = this.elements[i] + v.elements[i];
-        }
+    return new Matrix ([
+        [twooverRminusL, 0, 0, negRplusLoverRminusL],
+        [0, twooverTminusB, 0, negTplusBoverTminusB],
+        [0, 0, negtwooverFminusN, negFplusNoverFminusN],
+        [0, 0, 0, 1]
+    ]);
+};
 
-        return result;
-    };
+Matrix.persProj = function ( top, bottom, left, right, near, far) {
+    var twoNoverRminusL = (2 * near) / (right - left);
+    var RplusLoverRminusL = (right + left) / (right - left);
+    var twoNoverTminusB = (2 * near) / (top - bottom);
+    var TplusBoverTminusB = (top + bottom) / (top - bottom);
+    var negFplusNoverFminusN = -(far + near) / (far - near);
+    var negtwoNFoverFminusN = -(2 * near * far) / (far - near);
 
-    vector.prototype.subtract = function (v) {
-        var result = new Vector(),
-            i,
-            max;
+    return new Matrix ([
+        [twoNoverRminusL, 0, 0, RplusLoverRminusL],
+        [0, twoNoverTminusB, 0, TplusBoverTminusB],
+        [0, 0, negFplusNoverFminusN, negtwoNFoverFminusN],
+        [0, 0, -1, 0]
+    ]);
+};
 
-        // Dimensionality check.
-        checkDimensions(this, v);
-
-        for (i = 0, max = this.dimensions(); i < max; i += 1) {
-            result.elements[i] = this.elements[i] - v.elements[i];
-        }
-
-        return result;
-    };
-
-    // Scalar multiplication and division.
-    vector.prototype.multiply = function (s) {
-        var result = new Vector(),
-            i,
-            max;
-
-        for (i = 0, max = this.dimensions(); i < max; i += 1) {
-            result.elements[i] = this.elements[i] * s;
-        }
-
-        return result;
-    };
-
-    vector.prototype.divide = function (s) {
-        var result = new Vector(),
-            i,
-            max;
-
-        for (i = 0, max = this.dimensions(); i < max; i += 1) {
-            result.elements[i] = this.elements[i] / s;
-        }
-
-        return result;
-    };
-
-    // Dot product.
-    vector.prototype.dot = function (v) {
-        var result = 0,
-            i,
-            max;
-
-        // Dimensionality check.
-        checkDimensions(this, v);
-
-        for (i = 0, max = this.dimensions(); i < max; i += 1) {
-            result += this.elements[i] * v.elements[i];
-        }
-
-        return result;
-    };
-
-    // Cross product.
-    vector.prototype.cross = function (v) {
-        // This method is for 3D vectors only.
-        if (this.dimensions() !== 3 || v.dimensions() !== 3) {
-            throw "Cross product is for 3D vectors only.";
-        }
-
-        // With 3D vectors, we can just return the result directly.
-        return new Vector(
-            (this.y() * v.z()) - (this.z() * v.y()),
-            (this.z() * v.x()) - (this.x() * v.z()),
-            (this.x() * v.y()) - (this.y() * v.x())
-        );
-    };
-
-    // Magnitude and unit vector.
-    vector.prototype.magnitude = function () {
-        // Make use of the dot product.
-        return Math.sqrt(this.dot(this));
-    };
-
-    vector.prototype.unit = function () {
-        // At this point, we can leverage our more "primitive" methods.
-        return this.divide(this.magnitude());
-    };
-
-    // Projection.
-    vector.prototype.projection = function (v) {
-        var unitv;
-
-        // Dimensionality check.
-        checkDimensions(this, v);
-
-        // Plug and chug :)
-        // The projection of u onto v is u dot the unit vector of v
-        // times the unit vector of v.
-        unitv = v.unit();
-        return unitv.multiply(this.dot(unitv));
-    };
-
-    return vector;
-})();
+Matrix.prototype.toGL = function () {
+    var flat = [];
+    for (var r = 0; r < this.rowLength; r++) {
+        flat = flat.concat(this.matrix[r]);
+    }
+    return new Float32Array(flat);
+};
