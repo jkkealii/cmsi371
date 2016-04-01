@@ -12,8 +12,9 @@ var Shape = function (color, shape, gl_mode, mode, axis) {
 }
 
 Shape.prototype.rotate = function (angle, deltx, delty, deltz) {
-    var rotation = Matrix.rot(angle, deltx, delty, deltz);
-    this.transform = this.transform.mult(rotation);
+    this.rotation = Matrix.rot(angle, deltx, delty, deltz); 
+    // added rotation as property for testing purposes
+    this.transform = this.transform.mult(this.rotation);
     if (this.children) {
         for (var c = 0; c < this.children.length; c++) {
             this.children[c].rotate(angle, deltx, delty, deltz);
@@ -23,8 +24,9 @@ Shape.prototype.rotate = function (angle, deltx, delty, deltz) {
 };
 
 Shape.prototype.translate = function (deltx, delty, deltz) {
-    var translate = Matrix.trans(deltx, delty, deltz);
-    this.transform = this.transform.mult(translate);
+    this.translation = Matrix.trans(deltx, delty, deltz);
+    // added translation as property for testing purposes
+    this.transform = this.transform.mult(this.translation);
     if (this.children) {
         for (var c = 0; c < this.children.length; c++) {
             this.children[c].translate(deltx, delty, deltz);
@@ -34,8 +36,9 @@ Shape.prototype.translate = function (deltx, delty, deltz) {
 };
 
 Shape.prototype.scale = function (deltx, delty, deltz) {
-    var scale = Matrix.scal(detlx, delty, deltz);
-    this.transform = this.transform.mult(scale);
+    this.scaling = Matrix.scal(deltx, delty, deltz);
+    // added scale as property for testing purposes
+    this.transform = this.transform.mult(this.scaling);
     if (this.children) {
         for (var c = 0; c < this.children.length; c++) {
             this.children[c].scale(deltx, delty, deltz);
@@ -172,6 +175,14 @@ Shape.prototype.toRawTriangleArray = function () {
 }
 
 var Shapes = {
+    // for testing purposes
+    blanky: function () {
+        return {
+            vertices: [],
+            indices: []
+        };
+    },
+
     icosahedron: function () {
         var X = 0.525731112119133606,
             Z = 0.850650808352039932;
