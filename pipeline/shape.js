@@ -8,21 +8,40 @@ var Shape = function (color, shape, gl_mode, mode, axis) {
     this.axis = axis;
     this.gl_mode = gl_mode;
     this.mode = mode;
+    this.log = [];
 }
 
 Shape.prototype.rotate = function (angle, deltx, delty, deltz) {
     var rotation = Matrix.rot(angle, deltx, delty, deltz);
     this.transform = this.transform.mult(rotation);
+    if (this.children) {
+        for (var c = 0; c < this.children.length; c++) {
+            this.children[c].rotate(angle, deltx, delty, deltz);
+        }
+    }
+    return this;
 };
 
 Shape.prototype.translate = function (deltx, delty, deltz) {
     var translate = Matrix.trans(deltx, delty, deltz);
     this.transform = this.transform.mult(translate);
+    if (this.children) {
+        for (var c = 0; c < this.children.length; c++) {
+            this.children[c].translate(deltx, delty, deltz);
+        }
+    }
+    return this;
 };
 
 Shape.prototype.scale = function (deltx, delty, deltz) {
     var scale = Matrix.scal(detlx, delty, deltz);
     this.transform = this.transform.mult(scale);
+    if (this.children) {
+        for (var c = 0; c < this.children.length; c++) {
+            this.children[c].scale(deltx, delty, deltz);
+        }
+    }
+    return this;
 };
 
 Shape.prototype.draw = function (vertexColor, modelViewMatrix, vertexPosition, gl) {
@@ -34,6 +53,12 @@ Shape.prototype.draw = function (vertexColor, modelViewMatrix, vertexPosition, g
     gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
     gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false, 0, 0);
     gl.drawArrays(this.gl_mode, 0, this.rertices.length / 3);
+    if (this.children) {
+        for (var c = 0; c < this.children.length; c++) {
+            this.children[c].draw(vertexColor, modelViewMatrix, vertexPosition, gl);
+        }
+    }
+    return this;
 };
 
 Shape.prototype.g_ready = function (gl) {
@@ -57,6 +82,31 @@ Shape.prototype.g_ready = function (gl) {
         }
     }
     this.colorBuffer = GLSLUtilities.initVertexBuffer(gl, this.colors);
+    if (this.children) {
+        for (var c = 0; c < this.children.length; c++) {
+            this.children[c].g_ready(gl);
+        }
+    }
+};
+
+Shape.prototype.stash = function () {
+    this.log.push(new Matrix(this.transform.matrix));
+    if (this.children) {
+        for (var c = 0; c < this.children.length; c++) {
+            this.children[c].stash();
+        }
+    }
+    return this;
+};
+
+Shape.prototype.refresh = function () {
+    this.transform = this.log.pop();
+    if (this.children) {
+        for (var c = 0; c < this.children.length; c++) {
+            this.children[c].refresh();
+        }
+    }
+    return this;
 };
 
 Shape.prototype.manufactureYoungster = function (shape) {
@@ -65,6 +115,7 @@ Shape.prototype.manufactureYoungster = function (shape) {
     } else {
         this.children = [].concat(shape);
     }
+    return this;
 }
 
 Shape.prototype.razeYoungster = function (shape) {
@@ -73,6 +124,7 @@ Shape.prototype.razeYoungster = function (shape) {
     } else {
         this.children.pop();
     }
+    return this;
 }
 
 Shape.prototype.toRawLineArray = function () {

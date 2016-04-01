@@ -113,11 +113,36 @@
     gl.clearColor(0.0, 0.0, 0.0, 0.0);
     gl.viewport(0, 0, canvas.width, canvas.height);
 
+    var father = new Shape({ r: 0.0, g: 0.00, b: 0.45 }, 
+            Shapes.roundy(24, 24, 1.85), 
+            gl.LINES, "LINES", 
+            { x: 0.0, y: 1.0, z: 0.0 });
+    var youngster = new Shape({ r: 0.0, g: 0.45, b: 0.15 }, 
+            Shapes.roundy(12, 12, 1.65), 
+            gl.LINES, "LINES", 
+            { x: 0.0, y: 1.0, z: 0.0 });
+    var grandchild = new Shape({ r: 0.75, g: 0.10, b: 0.05 }, 
+            Shapes.roundy(12, 12, 1.45), 
+            gl.LINES, "LINES", 
+            { x: 0.0, y: 1.0, z: 0.0 });
+    father.manufactureYoungster(youngster);
+    youngster.manufactureYoungster(grandchild);
+
+
     objectsToDraw = [
-        new Shape({ r: 1, g: 0.5, b: 0 }, Shapes.icosahedron(), gl.LINES, "LINES", { x: 0.0, y: 1.0, z: 1.0 }),
-        new Shape({ r: 0.75, g: 0.25, b: 0.25 }, Shapes.pointy(), gl.LINES, "LINES", { x: 1.0, y: 1.0, z: 0.0 }),
-        new Shape({ r: 0.25, g: 0.80, b: 0.55 }, Shapes.longPointy(), gl.TRIANGLES, "TRIANGLES", { x: 1.0, y: 0.0, z: 1.0 }),
-        new Shape({ r: 0.0, g: 0.00, b: 0.45 }, Shapes.roundy(24, 24, 1.5), gl.LINES, "LINES", { x: 0.0, y: 1.0, z: 0.0 })
+        new Shape({ r: 1, g: 0.5, b: 0 }, 
+            Shapes.icosahedron(), 
+            gl.LINES, "LINES", 
+            { x: 0.0, y: 1.0, z: 1.0 }),
+        new Shape({ r: 0.75, g: 0.25, b: 0.25 }, 
+            Shapes.pointy(), 
+            gl.LINES, "LINES", 
+            { x: 1.0, y: 1.0, z: 0.0 }),
+        new Shape({ r: 0.25, g: 0.80, b: 0.55 }, 
+            Shapes.longPointy(), 
+            gl.TRIANGLES, "TRIANGLES", 
+            { x: 1.0, y: 0.0, z: 1.0 }),
+        father
     ];
 
     // for (i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
@@ -195,10 +220,12 @@
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
         for (i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
+            objectsToDraw[i].stash();
             if (objectsToDraw[i].axis) {
                 objectsToDraw[i].rotate(currentRotation, objectsToDraw[i].axis.x, objectsToDraw[i].axis.y, objectsToDraw[i].axis.z);
             }
             objectsToDraw[i].draw(vertexColor, modelViewMatrix, vertexPosition, gl);
+            objectsToDraw[i].refresh();
         }
         gl.flush();
     };
