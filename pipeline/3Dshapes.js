@@ -11,7 +11,6 @@
         modelViewMatrix,
         projectionMatrix,
         vertexPosition,
-        vertexColor,
         drawObject,
         drawScene,
         previousTimestamp,
@@ -87,10 +86,28 @@
 
     gl.useProgram(shaderProgram);
 
+    // Hold on to the important variables within the shaders.
     vertexPosition = gl.getAttribLocation(shaderProgram, "vertexPosition");
     gl.enableVertexAttribArray(vertexPosition);
-    vertexColor = gl.getAttribLocation(shaderProgram, "vertexColor");
-    gl.enableVertexAttribArray(vertexColor);
+    var vertexDiffuseColor = gl.getAttribLocation(shaderProgram, "vertexDiffuseColor");
+    gl.enableVertexAttribArray(vertexDiffuseColor);
+    var vertexSpecularColor = gl.getAttribLocation(shaderProgram, "vertexSpecularColor");
+    gl.enableVertexAttribArray(vertexSpecularColor);
+    var normalVector = gl.getAttribLocation(shaderProgram, "normalVector");
+    gl.enableVertexAttribArray(normalVector);
+
+    // Finally, we come to the typical setup for transformation matrices:
+    // model-view and projection, managed separately.
+    var modelViewMatrix = gl.getUniformLocation(shaderProgram, "modelViewMatrix");
+    var xRotationMatrix = gl.getUniformLocation(shaderProgram, "xRotationMatrix");
+    var yRotationMatrix = gl.getUniformLocation(shaderProgram, "yRotationMatrix");
+    var projectionMatrix = gl.getUniformLocation(shaderProgram, "projectionMatrix");
+
+    // Note the additional variables.
+    var lightPosition = gl.getUniformLocation(shaderProgram, "lightPosition");
+    var lightDiffuse = gl.getUniformLocation(shaderProgram, "lightDiffuse");
+    var lightSpecular = gl.getUniformLocation(shaderProgram, "lightSpecular");
+    var shininess = gl.getUniformLocation(shaderProgram, "shininess");
 
     modelViewMatrix = gl.getUniformLocation(shaderProgram, "modelViewMatrix");
     projectionMatrix = gl.getUniformLocation(shaderProgram, "projectionMatrix");
@@ -113,6 +130,7 @@
         }
         gl.flush();
     };
+
     gl.uniformMatrix4fv(projectionMatrix, gl.FALSE, Matrix.orthProj(
         -2 * (canvas.width / canvas.height),
         2 * (canvas.width / canvas.height),

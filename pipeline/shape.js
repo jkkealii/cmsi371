@@ -1,6 +1,6 @@
 
 
-var Shape = function (color, shape, gl_mode, mode, axis) {
+var Shape = function (color, shape, gl_mode, mode, axis, specularColor) {
     this.transform = new Matrix();
     this.vertices = shape.vertices;
     this.indices = shape.indices;
@@ -9,6 +9,7 @@ var Shape = function (color, shape, gl_mode, mode, axis) {
     this.gl_mode = gl_mode;
     this.mode = mode;
     this.log = [];
+    this.specularColor = specularColor;
 }
 
 Shape.prototype.rotate = function (angle, deltx, delty, deltz) {
@@ -47,18 +48,29 @@ Shape.prototype.scale = function (deltx, delty, deltz) {
     return this;
 };
 
-Shape.prototype.draw = function (vertexColor, modelViewMatrix, vertexPosition, gl) {
+Shape.prototype.draw = function (vertexDiffuseColor, vertexSpecularColor, shininess, modelViewMatrix, vertexPosition, gl, normalVector) {
     gl.bindBuffer(gl.ARRAY_BUFFER, this.colorBuffer);
-    gl.vertexAttribPointer(vertexColor, 3, gl.FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(vertexDiffuseColor, 3, gl.FLOAT, false, 0, 0);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.specularBuffer);
+    gl.vertexAttribPointer(vertexSpecularColor, 3, gl.FLOAT, false, 0, 0);
+
+    // Set the shininess.
+    gl.uniform1f(shininess, this.shininess);
 
     gl.uniformMatrix4fv(modelViewMatrix, gl.FALSE, this.transform.toGL());
+
+    // Set the varying normal vectors.
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.normalBuffer);
+    gl.vertexAttribPointer(normalVector, 3, gl.FLOAT, false, 0, 0);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
     gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false, 0, 0);
     gl.drawArrays(this.gl_mode, 0, this.rertices.length / 3);
+
     if (this.children) {
         for (var c = 0; c < this.children.length; c++) {
-            this.children[c].draw(vertexColor, modelViewMatrix, vertexPosition, gl);
+            this.children[c].draw(vertexDiffuseColor, vertexSpecularColor, shininess, modelViewMatrix, vertexPosition, gl, normalVector);
         }
     }
     return this;
@@ -167,6 +179,57 @@ Shape.prototype.toRawTriangleArray = function () {
                 this.vertices[
                     this.indices[i][j]
                 ]
+            );
+        }
+    }
+
+    return result;
+}
+
+Shape.prototype.toNormalArray = function () {
+    var result = [];
+
+    // For each face...
+    for (var i = 0, maxi = this.indices.length; i < maxi; i += 1) {
+        // We form vectors from the first and second then second and third vertices.
+        var p0 = this.vertices[this.indices[i][0]];
+        var p1 = this.vertices[this.indices[i][1]];
+        var p2 = this.vertices[this.indices[i][2]];
+
+        // Technically, the first value is not a vector, but v can stand for vertex
+        // anyway, so...
+        var v0 = new Vector(p0[0], p0[1], p0[2]);
+        var v1 = new Vector(p1[0], p1[1], p1[2]).subtract(v0);
+        var v2 = new Vector(p2[0], p2[1], p2[2]).subtract(v0);
+        var normal = v1.cross(v2).unit();
+
+        // We then use this same normal for every vertex in this face.
+        for (var j = 0, maxj = this.indices[i].length; j < maxj; j += 1) {
+            result = result.concat(
+                [ normal.x(), normal.y(), normal.z() ]
+            );
+        }
+    }
+
+    return result;
+},
+
+/*
+ * Another utility function for computing normals, this time just converting
+ * every vertex into its unit vector version.  This works mainly for objects
+ * that are centered around the origin.
+ */
+Shape.prototype.toVertexNormalArray = function () {
+    var result = [];
+
+    // For each face...
+    for (var i = 0, maxi = this.indices.length; i < maxi; i += 1) {
+        // For each vertex in that face...
+        for (var j = 0, maxj = this.indices[i].length; j < maxj; j += 1) {
+            var p = this.vertices[this.indices[i][j]];
+            var normal = new Vector(p[0], p[1], p[2]).unit();
+            result = result.concat(
+                [ normal.x(), normal.y(), normal.z() ]
             );
         }
     }
