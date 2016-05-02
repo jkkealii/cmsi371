@@ -33,19 +33,19 @@
 
     var father = new Shape({ r: 0.0, g: 0.0, b: 0.45 }, 
             Shapes.roundy(24, 24, 1.85), 
-            gl.TRIANGLES, "TRIANGLES", 
+            gl.LINES, "LINES", 
             { x: 0.0, y: 1.0, z: 0.0 },
             { r: 0.2, g: 0.5, b: 0.45 },
             10);
     var youngster = new Shape({ r: 0.0, g: 0.45, b: 0.15 }, 
             Shapes.roundy(12, 12, 1.65), 
-            gl.TRIANGLES, "TRIANGLES", 
+            gl.LINES, "LINES", 
             { x: 0.0, y: 1.0, z: 0.0 },
             { r: 0.2, g: 0.5, b: 0.45 },
             10);
     var grandchild = new Shape({ r: 0.75, g: 0.10, b: 0.05 }, 
             Shapes.roundy(12, 12, 1.45), 
-            gl.TRIANGLES, "TRIANGLES", 
+            gl.LINES, "LINES", 
             { x: 0.0, y: 1.0, z: 0.0 },
             { r: 0.2, g: 0.5, b: 0.45 },
             10);
@@ -56,13 +56,13 @@
     objectsToDraw = [
         new Shape({ r: 1, g: 0.5, b: 0 }, 
             Shapes.icosahedron(), 
-            gl.TRIANGLES, "TRIANGLES", 
+            gl.LINES, "LINES", 
             { x: 0.0, y: 1.0, z: 1.0 },
             { r: 0.2, g: 0.5, b: 0.45 },
             10),
         new Shape({ r: 0.75, g: 0.25, b: 0.25 }, 
             Shapes.pointy(), 
-            gl.TRIANGLES, "TRIANGLES", 
+            gl.LINES, "LINES", 
             { x: 1.0, y: 1.0, z: 0.0 },
             { r: 0.2, g: 0.5, b: 0.45 },
             10),
@@ -152,6 +152,8 @@
     ).toGL());
 
     gl.uniform4fv(lightPosition, [0, 0, -150, 1.0]);
+    gl.uniformMatrix4fv(xRotationMatrix, gl.FALSE, (new Matrix()).toGL());
+    gl.uniformMatrix4fv(yRotationMatrix, gl.FALSE, (new Matrix()).toGL());
     gl.uniform3fv(lightDiffuse, [1, 1, 1]);
     gl.uniform3fv(lightSpecular, [1, 1, 1]);
     gl.uniform1f(shininess, 1.0);
