@@ -36,19 +36,19 @@
             gl.TRIANGLES, "TRIANGLES", 
             { x: 0.0, y: 1.0, z: 0.0 },
             { r: 0.2, g: 0.5, b: 0.45 },
-            10);
+            10).translate(0.5, 1.0, 1.5);
     var youngster = new Shape({ r: 0.0, g: 0.45, b: 0.15 }, 
-            Shapes.roundy(12, 12, 1.65), 
-            gl.LINES, "LINES", 
-            { x: 0.0, y: 1.0, z: 0.0 },
+            Shapes.roundy(12, 12, 0.65), 
+            gl.TRIANGLES, "TRIANGLES", 
+            { x: 0.0, y: 0.5, z: 0.0 },
             { r: 0.2, g: 0.5, b: 0.45 },
-            10);
+            10).translate(2.5, 0.0, 0.5);
     var grandchild = new Shape({ r: 0.75, g: 0.10, b: 0.05 }, 
-            Shapes.roundy(12, 12, 1.45), 
-            gl.LINES, "LINES", 
-            { x: 0.0, y: 1.0, z: 0.0 },
+            Shapes.icosahedron(), 
+            gl.TRIANGLES, "TRIANGLES", 
+            { x: 0.0, y: -1.0, z: 0.0 },
             { r: 0.2, g: 0.5, b: 0.45 },
-            10);
+            10).translate(-2.5, 0.0, -0.5);
     father.manufactureYoungster(youngster);
     youngster.manufactureYoungster(grandchild);
 
@@ -56,8 +56,8 @@
     objectsToDraw = [
         new Shape({ r: 1, g: 0.5, b: 0 }, 
             Shapes.icosahedron(), 
-            gl.TRIANGLES, "TRIANGLES", 
-            { x: 0.0, y: 1.0, z: 1.0 },
+            gl.LINES, "LINES", 
+            { x: 0.0, y: 1.0, z: 0.0 },
             { r: 0.2, g: 0.5, b: 0.45 },
             12),
         new Shape({ r: 0.75, g: 0.25, b: 0.25 }, 

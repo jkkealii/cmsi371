@@ -123,10 +123,56 @@ Matrix.persProj = function ( top, bottom, left, right, near, far) {
     ]);
 };
 
+// Matrix.cameraMatrix = function ( p, q, up ) {
+//     var ze = (p.subtract(q)).unit(),
+//         ye = (up.subtract(up.projection(ze))).unit(),
+//         xe = ye.cross(ze);
+
+//     return new Matrix ([
+//         [xe.x(), xe.y(), xe.z(), -(p.dot(xe))],
+//         [ye.x(), ye.y(), ye.z(), -(p.dot(ye))],
+//         [ze.x(), ze.y(), ze.z(), -(p.dot(ze))],
+//         [0, 0, 0, 1]
+//     ]);
+// };
+
+Matrix.cameraMatrix = function(px, py, pz, qx, qy, qz, ux, uy, uz) {
+
+    var camPos = new Vector(px, py, pz);
+    var camLoc = new Vector(qx, qy, qz);
+    var northV = new Vector(ux, uy, uz);
+
+    var newZ = camPos.subtract(camLoc).unit();
+    var newY = northV.subtract(northV.projection(newZ)).unit();
+    var newX = newY.cross(newZ);
+
+    var camPosX = -1 * camPos.dot(newX);
+    var camPosY = -1 * camPos.dot(newY);
+    var camPosZ = -1 * camPos.dot(newZ);
+
+    return new Matrix ([
+        [newX.x(), newX.y(), newX.z(), camPosX],
+        [newY.x(), newY.y(), newY.z(), camPosY],
+        [newZ.x(), newZ.y(), newZ.z(), camPosZ],
+        [0, 0, 0, 1]
+    ]);
+
+    // return new Matrix([
+    //     [newX.x(), newY.x(), newZ.x(), 0],
+    //     [newX.y(), newY.y(), newZ.y(), 0],
+    //     [newX.z(), newY.z(), newZ.z(), 0],
+    //     [camPosX, camPosY , camPosZ , 1]
+    // ]);
+};
+
 Matrix.prototype.toGL = function () {
     var flat = [];
-    for (var r = 0; r < this.rowLength; r++) {
-        flat = flat.concat(this.matrix[r]);
+    for (var c = 0; c < this.columnLength; c++) {
+        var res = [];
+        for (var r = 0; r < this.rowLength; r++) {
+            res.push(this.matrix[r][c]);
+        }
+        flat = flat.concat(res);
     }
     return new Float32Array(flat);
 };
