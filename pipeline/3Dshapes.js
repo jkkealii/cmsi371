@@ -32,8 +32,8 @@
     gl.viewport(0, 0, canvas.width, canvas.height);
 
     var father = new Shape({ r: 0.0, g: 0.0, b: 0.45 }, 
-            Shapes.roundy(24, 24, 1.85), 
-            gl.LINES, "LINES", 
+            Shapes.roundy(24, 24, 0.85), 
+            gl.TRIANGLES, "TRIANGLES", 
             { x: 0.0, y: 1.0, z: 0.0 },
             { r: 0.2, g: 0.5, b: 0.45 },
             10);
@@ -56,22 +56,22 @@
     objectsToDraw = [
         new Shape({ r: 1, g: 0.5, b: 0 }, 
             Shapes.icosahedron(), 
-            gl.LINES, "LINES", 
+            gl.TRIANGLES, "TRIANGLES", 
             { x: 0.0, y: 1.0, z: 1.0 },
             { r: 0.2, g: 0.5, b: 0.45 },
-            10),
+            12),
         new Shape({ r: 0.75, g: 0.25, b: 0.25 }, 
             Shapes.pointy(), 
             gl.LINES, "LINES", 
             { x: 1.0, y: 1.0, z: 0.0 },
             { r: 0.2, g: 0.5, b: 0.45 },
-            10),
+            12),
         new Shape({ r: 0.25, g: 0.80, b: 0.55 }, 
             Shapes.longPointy(), 
-            gl.TRIANGLES, "TRIANGLES", 
+            gl.LINES, "LINES", 
             { x: 1.0, y: 0.0, z: 1.0 },
-            { r: 0.2, g: 0.5, b: 0.45 },
-            10),
+            { r: 0.3, g: 0.3, b: 0.0 },
+            0.25),
         father
     ];
 
@@ -151,7 +151,7 @@
         10
     ).toGL());
 
-    gl.uniform4fv(lightPosition, [0, 0, -150, 1.0]);
+    gl.uniform4fv(lightPosition, [5, -50, -200, 1.0]);
     gl.uniformMatrix4fv(xRotationMatrix, gl.FALSE, (new Matrix()).toGL());
     gl.uniformMatrix4fv(yRotationMatrix, gl.FALSE, (new Matrix()).toGL());
     gl.uniform3fv(lightDiffuse, [1, 1, 1]);
