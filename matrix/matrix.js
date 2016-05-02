@@ -91,7 +91,7 @@ Matrix.rot = function (angle, x, y, z) {
     ]);
 };
 
-Matrix.orthProj = function ( top, bottom, left, right, near, far) {
+Matrix.orthProj = function ( top, bottom, left, right, near, far ) {
     var twooverRminusL = 2 / (right - left);
     var negRplusLoverRminusL = -(right + left) / (right - left);
     var twooverTminusB = 2 / (top - bottom);
@@ -107,7 +107,7 @@ Matrix.orthProj = function ( top, bottom, left, right, near, far) {
     ]);
 };
 
-Matrix.persProj = function ( top, bottom, left, right, near, far) {
+Matrix.persProj = function ( top, bottom, left, right, near, far ) {
     var twoNoverRminusL = (2 * near) / (right - left);
     var RplusLoverRminusL = (right + left) / (right - left);
     var twoNoverTminusB = (2 * near) / (top - bottom);
@@ -122,6 +122,34 @@ Matrix.persProj = function ( top, bottom, left, right, near, far) {
         [0, 0, -1, 0]
     ]);
 };
+
+// Matrix.persProj = function ( left, right, bottom, top, zNear, zFar ) {
+//     var width = right - left,
+//         height = top - bottom,
+//         depth = zFar - zNear;
+
+//     return new Matrix ([
+//         [2.0 * zNear / width,
+//         0.0,
+//         (right + left) / width,
+//         0.0],
+
+//         [0.0,
+//         2.0 * zNear / height,
+//         (top + bottom) / height,
+//         0.0],
+
+//         [0.0,
+//         0.0,
+//         -(zFar + zNear) / depth,
+//         -2.0 * zFar * zNear / depth],
+
+//         [0.0,
+//         0.0,
+//         -1.0,
+//         0.0]
+//     ]);
+// };
 
 // Matrix.cameraMatrix = function ( p, q, up ) {
 //     var ze = (p.subtract(q)).unit(),

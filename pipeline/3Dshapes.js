@@ -44,7 +44,7 @@
             { r: 0.2, g: 0.5, b: 0.45 },
             10).translate(2.5, 0.0, 0.5);
     var grandchild = new Shape({ r: 0.75, g: 0.10, b: 0.05 }, 
-            Shapes.icosahedron(), 
+            Shapes.roundy(12, 12, 0.75), 
             gl.TRIANGLES, "TRIANGLES", 
             { x: 0.0, y: -1.0, z: 0.0 },
             { r: 0.2, g: 0.5, b: 0.45 },
@@ -56,19 +56,19 @@
     objectsToDraw = [
         new Shape({ r: 1, g: 0.5, b: 0 }, 
             Shapes.icosahedron(), 
-            gl.LINES, "LINES", 
+            gl.TRIANGLES, "TRIANGLES", 
             { x: 0.0, y: 1.0, z: 0.0 },
             { r: 0.2, g: 0.5, b: 0.45 },
             12),
         new Shape({ r: 0.75, g: 0.25, b: 0.25 }, 
             Shapes.pointy(), 
-            gl.LINES, "LINES", 
+            gl.TRIANGLES, "TRIANGLES", 
             { x: 1.0, y: 1.0, z: 0.0 },
             { r: 0.2, g: 0.5, b: 0.45 },
             12),
         new Shape({ r: 0.25, g: 0.80, b: 0.55 }, 
             Shapes.longPointy(), 
-            gl.LINES, "LINES", 
+            gl.TRIANGLES, "TRIANGLES", 
             { x: 1.0, y: 0.0, z: 1.0 },
             { r: 0.3, g: 0.3, b: 0.0 },
             0.25),
@@ -123,6 +123,7 @@
 
     modelViewMatrix = gl.getUniformLocation(shaderProgram, "modelViewMatrix");
     projectionMatrix = gl.getUniformLocation(shaderProgram, "projectionMatrix");
+    var cameraMatrix = gl.getUniformLocation(shaderProgram, "cameraMatrix");
 
     for (var i = 0; i < objectsToDraw.length; i++) {
         objectsToDraw[i].g_ready(gl);
@@ -143,12 +144,16 @@
     };
 
     gl.uniformMatrix4fv(projectionMatrix, gl.FALSE, Matrix.orthProj(
-        -2 * (canvas.width / canvas.height),
-        2 * (canvas.width / canvas.height),
-        -2,
-        2,
-        -10,
-        10
+        -4 * (canvas.width / canvas.height),
+        4 * (canvas.width / canvas.height),
+        -4,
+        4,
+        -20,
+        20
+    ).toGL());
+
+    gl.uniformMatrix4fv(cameraMatrix, gl.FALSE, Matrix.cameraMatrix(
+        1, 1, 1, 1, 1, currentRotation, 1, 1, 1
     ).toGL());
 
     gl.uniform4fv(lightPosition, [5, -50, -200, 1.0]);
