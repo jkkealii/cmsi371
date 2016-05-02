@@ -1,6 +1,6 @@
 
 
-var Shape = function (color, shape, gl_mode, mode, axis, specularColor) {
+var Shape = function (color, shape, gl_mode, mode, axis, specularColor, shininess) {
     this.transform = new Matrix();
     this.vertices = shape.vertices;
     this.indices = shape.indices;
@@ -10,6 +10,7 @@ var Shape = function (color, shape, gl_mode, mode, axis, specularColor) {
     this.mode = mode;
     this.log = [];
     this.specularColor = specularColor;
+    this.shininess = shininess;
 }
 
 Shape.prototype.rotate = function (angle, deltx, delty, deltz) {
@@ -49,20 +50,19 @@ Shape.prototype.scale = function (deltx, delty, deltz) {
 };
 
 Shape.prototype.draw = function (vertexDiffuseColor, vertexSpecularColor, shininess, modelViewMatrix, vertexPosition, gl, normalVector) {
+    gl.uniformMatrix4fv(modelViewMatrix, gl.FALSE, this.transform.toGL());
+
     gl.bindBuffer(gl.ARRAY_BUFFER, this.colorBuffer);
     gl.vertexAttribPointer(vertexDiffuseColor, 3, gl.FLOAT, false, 0, 0);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, this.specularBuffer);
     gl.vertexAttribPointer(vertexSpecularColor, 3, gl.FLOAT, false, 0, 0);
 
-    // Set the shininess.
-    gl.uniform1f(shininess, this.shininess);
-
-    gl.uniformMatrix4fv(modelViewMatrix, gl.FALSE, this.transform.toGL());
-
-    // Set the varying normal vectors.
     gl.bindBuffer(gl.ARRAY_BUFFER, this.normalBuffer);
     gl.vertexAttribPointer(normalVector, 3, gl.FLOAT, false, 0, 0);
+
+    // Set the shininess.
+    gl.uniform1f(shininess, this.shininess);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
     gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false, 0, 0);
@@ -97,6 +97,25 @@ Shape.prototype.g_ready = function (gl) {
         }
     }
     this.colorBuffer = GLSLUtilities.initVertexBuffer(gl, this.colors);
+
+    if (!this.specularColors) {
+        // Future refactor: helper function to convert a single value or
+        // array into an array of copies of itself.
+        this.specularColors = [];
+        for (var j = 0, maxj = this.rertices.length / 3; j < maxj; j += 1) {
+            this.specularColors = this.specularColors.concat(
+                this.specularColor.r,
+                this.specularColor.g,
+                this.specularColor.b
+            );
+        }
+    }
+    this.specularBuffer = GLSLUtilities.initVertexBuffer(gl, this.specularColors);
+
+    // One more buffer: normals.
+    this.normals = this.toNormalArray();
+    this.normalBuffer = GLSLUtilities.initVertexBuffer(gl, this.normals);
+
     if (this.children) {
         for (var c = 0; c < this.children.length; c++) {
             this.children[c].g_ready(gl);
@@ -131,7 +150,7 @@ Shape.prototype.manufactureYoungster = function (shape) {
         this.children = [].concat(shape);
     }
     return this;
-}
+};
 
 Shape.prototype.razeYoungster = function (shape) {
     if (shape) {
@@ -140,7 +159,7 @@ Shape.prototype.razeYoungster = function (shape) {
         this.children.pop();
     }
     return this;
-}
+};
 
 Shape.prototype.toRawLineArray = function () {
     var result = [],
@@ -164,7 +183,7 @@ Shape.prototype.toRawLineArray = function () {
     }
 
     return result;
-}
+};
 
 Shape.prototype.toRawTriangleArray = function () {
     var result = [],
@@ -184,7 +203,7 @@ Shape.prototype.toRawTriangleArray = function () {
     }
 
     return result;
-}
+};
 
 Shape.prototype.toNormalArray = function () {
     var result = [];
@@ -212,7 +231,7 @@ Shape.prototype.toNormalArray = function () {
     }
 
     return result;
-},
+};
 
 /*
  * Another utility function for computing normals, this time just converting
@@ -235,7 +254,7 @@ Shape.prototype.toVertexNormalArray = function () {
     }
 
     return result;
-}
+};
 
 var Shapes = {
     // for testing purposes
