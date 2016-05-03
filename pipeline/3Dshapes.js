@@ -129,8 +129,14 @@
         objectsToDraw[i].g_ready(gl);
     }
 
+    var rotationAroundX = 0.0;
+    var rotationAroundY = 0.0;
+
     drawScene = function () {
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+        gl.uniformMatrix4fv(xRotationMatrix, gl.FALSE, Matrix.rot(rotationAroundX, 1.0, 0.0, 0.0).toGL());
+        gl.uniformMatrix4fv(yRotationMatrix, gl.FALSE, Matrix.rot(rotationAroundY, 0.0, 1.0, 0.0).toGL());
 
         for (i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
             objectsToDraw[i].stash();
@@ -153,7 +159,7 @@
     ).toGL());
 
     gl.uniformMatrix4fv(cameraMatrix, gl.FALSE, Matrix.cameraMatrix(
-        1, 1, 0, 0, 0, currentRotation, 0, 3, 2
+        1, 5, 3, 1, 0, currentRotation, 0, 3, 2
     ).toGL());
 
     gl.uniform4fv(lightPosition, [5, -50, -200, 1.0]);
@@ -163,41 +169,61 @@
     gl.uniform3fv(lightSpecular, [1, 1, 1]);
     gl.uniform1f(shininess, 1.0);
 
-    previousTimestamp = null;
-    advanceScene = function (timestamp) {
-        if (!animationActive) {
-            return;
-        }
+    // previousTimestamp = null;
+    // advanceScene = function (timestamp) {
+    //     if (!animationActive) {
+    //         return;
+    //     }
 
-        if (!previousTimestamp) {
-            previousTimestamp = timestamp;
-            window.requestAnimationFrame(advanceScene);
-            return;
-        }
+    //     if (!previousTimestamp) {
+    //         previousTimestamp = timestamp;
+    //         window.requestAnimationFrame(advanceScene);
+    //         return;
+    //     }
 
-        var progress = timestamp - previousTimestamp;
-        if (progress < 30) {
-            window.requestAnimationFrame(advanceScene);
-            return;
-        }
+    //     var progress = timestamp - previousTimestamp;
+    //     if (progress < 30) {
+    //         window.requestAnimationFrame(advanceScene);
+    //         return;
+    //     }
 
-        currentRotation += 0.033 * progress;
+    //     currentRotation += 0.033 * progress;
+    //     drawScene();
+    //     if (currentRotation >= 360.0) {
+    //         currentRotation -= 360.0;
+    //     }
+    //     previousTimestamp = timestamp;
+    //     window.requestAnimationFrame(advanceScene);
+    // };
+
+    var rotateScene = function (event) {
+        rotationAroundX = xRotationStart - yDragStart + event.clientY;
+        rotationAroundY = yRotationStart - xDragStart + event.clientX;
         drawScene();
-        if (currentRotation >= 360.0) {
-            currentRotation -= 360.0;
-        }
-        previousTimestamp = timestamp;
-        window.requestAnimationFrame(advanceScene);
     };
+
+    var xDragStart;
+    var yDragStart;
+    var xRotationStart;
+    var yRotationStart;
+    $(canvas).mousedown(function (event) {
+        xDragStart = event.clientX;
+        yDragStart = event.clientY;
+        xRotationStart = rotationAroundX;
+        yRotationStart = rotationAroundY;
+        $(canvas).mousemove(rotateScene);
+    }).mouseup(function (event) {
+        $(canvas).unbind("mousemove");
+    });
 
     drawScene();
 
-    $(canvas).click(function () {
-        animationActive = !animationActive;
-        if (animationActive) {
-            previousTimestamp = null;
-            window.requestAnimationFrame(advanceScene);
-        }
-    });
+    // $(canvas).click(function () {
+    //     animationActive = !animationActive;
+    //     if (animationActive) {
+    //         previousTimestamp = null;
+    //         window.requestAnimationFrame(advanceScene);
+    //     }
+    // });
 
 }(document.getElementById("3Dshapes")));
