@@ -31,48 +31,73 @@
     gl.clearColor(0.0, 0.0, 0.0, 0.0);
     gl.viewport(0, 0, canvas.width, canvas.height);
 
-    var father = new Shape({ r: 0.0, g: 0.0, b: 0.45 }, 
-            Shapes.roundy(24, 24, 0.85), 
+    // var father = new Shape({ r: 0.0, g: 0.0, b: 0.45 }, 
+    //         Shapes.roundy(24, 24, 0.85), 
+    //         gl.TRIANGLES, "TRIANGLES", 
+    //         { x: 0.0, y: 1.0, z: 0.0 },
+    //         { r: 0.2, g: 0.5, b: 0.45 },
+    //         10).translate(0.5, 1.0, 1.5);
+    // var youngster = new Shape({ r: 0.0, g: 0.45, b: 0.15 }, 
+    //         Shapes.roundy(12, 12, 0.65), 
+    //         gl.TRIANGLES, "TRIANGLES", 
+    //         { x: 0.0, y: 0.5, z: 0.0 },
+    //         { r: 0.2, g: 0.5, b: 0.45 },
+    //         10).translate(2.5, 0.0, 0.5);
+    // var grandchild = new Shape({ r: 0.75, g: 0.10, b: 0.05 }, 
+    //         Shapes.roundy(12, 12, 0.75), 
+    //         gl.TRIANGLES, "TRIANGLES", 
+    //         { x: 0.0, y: -1.0, z: 0.0 },
+    //         { r: 0.2, g: 0.5, b: 0.45 },
+    //         10).translate(-2.5, 0.0, -0.5);
+    // father.manufactureYoungster(youngster);
+    // youngster.manufactureYoungster(grandchild);
+
+
+    // objectsToDraw = [
+    //     new Shape({ r: 1, g: 0.5, b: 0 }, 
+    //         Shapes.icosahedron(), 
+    //         gl.TRIANGLES, "TRIANGLES", 
+    //         { x: 0.0, y: 1.0, z: 0.0 },
+    //         { r: 0.2, g: 0.5, b: 0.45 },
+    //         12),
+    //     new Shape({ r: 0.75, g: 0.25, b: 0.25 }, 
+    //         Shapes.pointy(), 
+    //         gl.TRIANGLES, "TRIANGLES", 
+    //         { x: 1.0, y: 1.0, z: 0.0 },
+    //         { r: 0.2, g: 0.5, b: 0.45 },
+    //         12),
+    //     new Shape({ r: 0.25, g: 0.80, b: 0.55 }, 
+    //         Shapes.longPointy(), 
+    //         gl.TRIANGLES, "TRIANGLES", 
+    //         { x: 1.0, y: 0.0, z: 1.0 },
+    //         { r: 0.3, g: 0.3, b: 0.0 },
+    //         0.25),
+    //     father
+    // ];
+
+    var snowman = new Shape({ r: 0.9, g: 0.1, b: 0.1 }, 
+            Shapes.roundy(24, 24, 0.40), 
             gl.TRIANGLES, "TRIANGLES", 
             { x: 0.0, y: 1.0, z: 0.0 },
-            { r: 0.2, g: 0.5, b: 0.45 },
-            10).translate(0.5, 1.0, 1.5);
-    var youngster = new Shape({ r: 0.0, g: 0.45, b: 0.15 }, 
-            Shapes.roundy(12, 12, 0.65), 
+            { r: 0.5, g: 0.75, b: 0.25 },
+            10);
+    var torso = new Shape({ r: 0.9, g: 0.1, b: 0.5 }, 
+            Shapes.roundy(24, 24, 0.55), 
             gl.TRIANGLES, "TRIANGLES", 
-            { x: 0.0, y: 0.5, z: 0.0 },
-            { r: 0.2, g: 0.5, b: 0.45 },
-            10).translate(2.5, 0.0, 0.5);
-    var grandchild = new Shape({ r: 0.75, g: 0.10, b: 0.05 }, 
-            Shapes.roundy(12, 12, 0.75), 
+            { x: 0.0, y: 1.0, z: 0.0 },
+            { r: 0.5, g: 0.75, b: 0.25 },
+            10).translate(0.0, -1.65, 0.0);
+    var bum = new Shape({ r: 0.7, g: 0.2, b: 0.1 }, 
+            Shapes.roundy(24, 24, 0.70), 
             gl.TRIANGLES, "TRIANGLES", 
-            { x: 0.0, y: -1.0, z: 0.0 },
-            { r: 0.2, g: 0.5, b: 0.45 },
-            10).translate(-2.5, 0.0, -0.5);
-    father.manufactureYoungster(youngster);
-    youngster.manufactureYoungster(grandchild);
+            { x: 0.0, y: 1.0, z: 0.0 },
+            { r: 0.5, g: 0.75, b: 0.25 },
+            10).translate(0.0, -3.5, 0.0);
 
-
+    snowman.manufactureYoungster(torso);
+    torso.manufactureYoungster(bum);
     objectsToDraw = [
-        new Shape({ r: 1, g: 0.5, b: 0 }, 
-            Shapes.icosahedron(), 
-            gl.TRIANGLES, "TRIANGLES", 
-            { x: 0.0, y: 1.0, z: 0.0 },
-            { r: 0.2, g: 0.5, b: 0.45 },
-            12),
-        new Shape({ r: 0.75, g: 0.25, b: 0.25 }, 
-            Shapes.pointy(), 
-            gl.TRIANGLES, "TRIANGLES", 
-            { x: 1.0, y: 1.0, z: 0.0 },
-            { r: 0.2, g: 0.5, b: 0.45 },
-            12),
-        new Shape({ r: 0.25, g: 0.80, b: 0.55 }, 
-            Shapes.longPointy(), 
-            gl.TRIANGLES, "TRIANGLES", 
-            { x: 1.0, y: 0.0, z: 1.0 },
-            { r: 0.3, g: 0.3, b: 0.0 },
-            0.25),
-        father
+        snowman
     ];
 
     shaderProgram = GLSLUtilities.initSimpleShaderProgram(
@@ -159,7 +184,7 @@
     ).toGL());
 
     gl.uniformMatrix4fv(cameraMatrix, gl.FALSE, Matrix.cameraMatrix(
-        1, 5, 3, 1, 0, currentRotation, 0, 3, 2
+        1, 0, 0, 0, 0, currentRotation, 1, 1, 0
     ).toGL());
 
     gl.uniform4fv(lightPosition, [5, -50, -200, 1.0]);
