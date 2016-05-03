@@ -30,6 +30,7 @@
           attribute vec3 normalVector;
           // The should-now-be-familiar matrices.
           uniform mat4 projectionMatrix;
+          uniform mat4 cameraMatrix;
           uniform mat4 modelViewMatrix;
           uniform mat4 xRotationMatrix;
           uniform mat4 yRotationMatrix;
@@ -59,7 +60,7 @@
               // We now defer all color calculations to the fragment shader.
               fragmentDiffuseColor = vertexDiffuseColor;
               fragmentSpecularColor = vertexSpecularColor;
-              gl_Position = projectionMatrix *
+              gl_Position = projectionMatrix * cameraMatrix *
                       xRotationMatrix * yRotationMatrix *
                       modelViewMatrix * vec4(2.0 * vertexPosition, 1.0);
           }

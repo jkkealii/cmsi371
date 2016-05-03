@@ -153,7 +153,7 @@
     ).toGL());
 
     gl.uniformMatrix4fv(cameraMatrix, gl.FALSE, Matrix.cameraMatrix(
-        1, 1, 1, 1, 1, currentRotation, 1, 1, 1
+        1, 1, 0, 0, 0, currentRotation, 0, 3, 2
     ).toGL());
 
     gl.uniform4fv(lightPosition, [5, -50, -200, 1.0]);
