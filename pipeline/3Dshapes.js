@@ -92,10 +92,32 @@
             gl.TRIANGLES, "TRIANGLES", 
             { x: 0.0, y: 1.0, z: 0.0 },
             { r: 0.5, g: 0.75, b: 0.25 },
-            10).translate(0.0, -3.5, 0.0);
+            10).translate(0.0, -3.7, 0.0);
+    var leftEye = new Shape({ r: 0.1, g: 0.5, b: 0.5 }, 
+            Shapes.roundy(15, 15, 0.07), 
+            gl.TRIANGLES, "TRIANGLES", 
+            { x: 0.0, y: 1.0, z: 0.0 },
+            { r: 0.5, g: 0.75, b: 0.25 },
+            10).translate(0.24, 0.25, 0.75);
+    var rightEye = new Shape({ r: 0.1, g: 0.5, b: 0.5 }, 
+            Shapes.roundy(15, 15, 0.07), 
+            gl.TRIANGLES, "TRIANGLES", 
+            { x: 0.0, y: 1.0, z: 0.0 },
+            { r: 0.5, g: 0.75, b: 0.25 },
+            10).translate(-0.24, 0.25, 0.70);
+    var nose = new Shape({ r: 0.0, g: 0.3, b: 0.6 }, 
+            Shapes.pointy(), 
+            gl.TRIANGLES, "TRIANGLES", 
+            { x: 0.0, y: 1.0, z: 0.0 },
+            { r: 0.5, g: 0.75, b: 0.25 },
+            10).translate(0.0, -0.25, 0.70).scale(0.25, 0.15, 0.25).rotate(45, 0, 1, 0);
 
     snowman.manufactureYoungster(torso);
     torso.manufactureYoungster(bum);
+    bum.manufactureYoungster(leftEye);
+    leftEye.manufactureYoungster(rightEye);
+    rightEye.manufactureYoungster(nose);
+
     objectsToDraw = [
         snowman
     ];
@@ -175,10 +197,10 @@
     };
 
     gl.uniformMatrix4fv(projectionMatrix, gl.FALSE, Matrix.orthProj(
-        -4 * (canvas.width / canvas.height),
-        4 * (canvas.width / canvas.height),
-        -4,
-        4,
+        -7 * (canvas.width / canvas.height),
+        7 * (canvas.width / canvas.height),
+        -7,
+        7,
         -20,
         20
     ).toGL());
