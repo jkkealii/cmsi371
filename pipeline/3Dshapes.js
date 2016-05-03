@@ -111,12 +111,40 @@
             { x: 0.0, y: 1.0, z: 0.0 },
             { r: 0.5, g: 0.75, b: 0.25 },
             10).translate(0.0, -0.25, 0.70).scale(0.25, 0.15, 0.25).rotate(45, 0, 1, 0);
+    var firstButton = new Shape({ r: 0.9, g: 0.9, b: 0.9 }, 
+            Shapes.roundy(15, 15, 0.06), 
+            gl.TRIANGLES, "TRIANGLES", 
+            { x: 0.0, y: 1.0, z: 0.0 },
+            { r: 0.5, g: 0.75, b: 0.25 },
+            10).translate(0.0, -1.2, 1.0);
+    var secondButton = new Shape({ r: 0.9, g: 0.9, b: 0.9 }, 
+            Shapes.roundy(15, 15, 0.06), 
+            gl.TRIANGLES, "TRIANGLES", 
+            { x: 0.0, y: 1.0, z: 0.0 },
+            { r: 0.5, g: 0.75, b: 0.25 },
+            10).translate(0.0, -1.9, 1.05);
+    var thirdButton = new Shape({ r: 0.9, g: 0.9, b: 0.9 }, 
+            Shapes.roundy(15, 15, 0.06), 
+            gl.TRIANGLES, "TRIANGLES", 
+            { x: 0.0, y: 1.0, z: 0.0 },
+            { r: 0.5, g: 0.75, b: 0.25 },
+            10).translate(0.0, -3.1, 1.25);
+    var fourthButton = new Shape({ r: 0.9, g: 0.9, b: 0.9 }, 
+            Shapes.roundy(15, 15, 0.06), 
+            gl.TRIANGLES, "TRIANGLES", 
+            { x: 0.0, y: 1.0, z: 0.0 },
+            { r: 0.5, g: 0.75, b: 0.25 },
+            10).translate(0.0, -3.9, 1.35);
 
     snowman.manufactureYoungster(torso);
     torso.manufactureYoungster(bum);
     bum.manufactureYoungster(leftEye);
     leftEye.manufactureYoungster(rightEye);
     rightEye.manufactureYoungster(nose);
+    nose.manufactureYoungster(firstButton);
+    firstButton.manufactureYoungster(secondButton);
+    secondButton.manufactureYoungster(thirdButton);
+    thirdButton.manufactureYoungster(fourthButton);
 
     objectsToDraw = [
         snowman
@@ -197,10 +225,10 @@
     };
 
     gl.uniformMatrix4fv(projectionMatrix, gl.FALSE, Matrix.orthProj(
-        -7 * (canvas.width / canvas.height),
-        7 * (canvas.width / canvas.height),
-        -7,
-        7,
+        -6 * (canvas.width / canvas.height),
+        6 * (canvas.width / canvas.height),
+        -6,
+        6,
         -20,
         20
     ).toGL());
