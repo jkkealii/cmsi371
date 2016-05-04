@@ -301,4 +301,4 @@
     //     }
     // });
 
-}(document.getElementById("3Dshapes")));
+}(document.getElementById("duckman3D")));
